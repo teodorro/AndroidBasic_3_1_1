@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AndroidBasic_3_1_1</string>
+    <string name="hello_nmedia">Hello NMedia!</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_remove">Remove</string>
+    <string name="post_text">Post text</string>
+    <string name="error_empty_content">Smth wrong</string>
+</resources>

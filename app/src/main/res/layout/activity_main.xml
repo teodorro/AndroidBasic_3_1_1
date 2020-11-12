@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recylerViewPosts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/barrier1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/card_post" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="recylerViewPosts"/>
+
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupRevert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="textViewEditLabel, imageButtonCloseEditing, textViewEditContent"
+        app:layout_constraintBottom_toTopOf="@+id/imageButtonCloseEditing"
+        app:layout_constraintTop_toTopOf="@id/barrier1"
+        tools:ignore="NotSibling" />
+
+    <TextView
+        android:id="@+id/textViewEditLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/common_spacing"
+        android:text="Edit Content"
+        android:textColor="@android:color/holo_blue_light"
+        app:layout_constraintBottom_toTopOf="@id/textViewEditContent"
+        app:layout_constraintEnd_toStartOf="@id/imageButtonCloseEditing"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageButtonCloseEditing"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    <TextView
+        android:id="@+id/textViewEditContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/common_spacing"
+        android:text="asdfdsafsa"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButtonCloseEditing"
+        app:layout_constraintEnd_toStartOf="@id/imageButtonCloseEditing"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewEditLabel"
+        app:layout_constraintVertical_chainStyle="spread"
+        android:singleLine="true"
+        android:ellipsize="end" />
+
+
+    <ImageButton
+        android:id="@+id/imageButtonCloseEditing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/common_spacing"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="@id/barrier1"
+        app:layout_constraintBottom_toTopOf="@id/editTextContent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_close_24" />
+
+
+    <EditText
+        android:id="@+id/editTextContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:hint="@string/post_text"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:padding="@dimen/common_spacing"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButtonSave"
+        app:layout_constraintEnd_toStartOf="@id/imageButtonSave"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageButtonSave" />
+
+    <ImageButton
+        android:id="@+id/imageButtonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:padding="@dimen/common_spacing"
+        app:layout_constraintTop_toBottomOf="@id/groupRevert"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/editTextContent"
+        app:srcCompat="@drawable/ic_baseline_done_24" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
