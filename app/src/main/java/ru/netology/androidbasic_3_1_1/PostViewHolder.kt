@@ -14,15 +14,13 @@ class PostViewHolder(
             textViewAuthor.text = post.author
             textViewMessage.text = post.content
             textViewPublished.text = post.published
-            textViewLikes.text = convertIntToStr(post.likes)
-            textViewShares.text = convertIntToStr(post.shares)
             textViewViews.text = convertIntToStr(post.views)
-            imageButtonLikes.setImageResource(
-                if (post.likedByMe) R.drawable.ic_liked_24 else R.drawable.ic_like_outline_24
-            )
-            imageButtonLikes.setOnClickListener { onInteractionListener.onLike(post) }
-            imageButtonShares.setOnClickListener { onInteractionListener.onShare(post) }
-            imageButtonMenu.setOnClickListener {
+            materialButtonLikes.text = convertIntToStr(post.likes)
+            materialButtonLikes.isChecked = post.likedByMe
+            materialButtonLikes.setOnClickListener { onInteractionListener.onLike(post)}
+            materialButtonShares.text = convertIntToStr(post.shares)
+            materialButtonShares.setOnClickListener { onInteractionListener.onShare(post) }
+            materialButtonMenu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.options_post)
                     setOnMenuItemClickListener { item ->

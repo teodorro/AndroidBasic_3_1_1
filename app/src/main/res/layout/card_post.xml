@@ -25,7 +25,7 @@
         app:layout_constraintStart_toEndOf="@+id/imageViewAvatar"
         app:layout_constraintTop_toTopOf="@+id/imageViewAvatar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButtonMenu"
+        app:layout_constraintEnd_toStartOf="@+id/materialButtonMenu"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="@sample/posts.json/data/author"
         android:singleLine="true"
@@ -42,19 +42,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/imageViewAvatar"
         app:layout_constraintTop_toBottomOf="@id/textViewAuthor"
-        app:layout_constraintEnd_toStartOf="@id/imageButtonMenu"
+        app:layout_constraintEnd_toStartOf="@id/materialButtonMenu"
         tools:text="@sample/posts.json/data/published" />
 
-    <ImageButton
-        android:id="@+id/imageButtonMenu"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/materialButtonMenu"
+        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_spacing"
         android:layout_marginEnd="@dimen/common_spacing"
-        android:background="@android:color/transparent"
+        app:icon="@drawable/ic_baseline_more_vert_24"
+        app:iconTint="?colorControlNormal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageViewAvatar"
-        app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+        app:layout_constraintTop_toTopOf="@+id/imageViewAvatar"/>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier1"
@@ -84,47 +85,37 @@
         app:constraint_referenced_ids="textViewMessage"
         tools:layout_editor_absoluteY="72dp" />
 
-    <ImageButton
-        android:id="@+id/imageButtonLikes"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/materialButtonLikes"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/common_spacing"
         android:layout_marginTop="@dimen/common_spacing"
-        android:background="@android:color/transparent"
-        android:padding="@dimen/common_spacing"
+        android:checkable="true"
+        app:icon="@drawable/selector_like"
+        app:iconTint="@color/selector_like_color"
+        app:backgroundTint="@android:color/transparent"
+        android:textColor="?colorControlNormal"
+        tools:text="@sample/posts.json/data/likes"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barrier2"
-        app:srcCompat="@drawable/ic_like_outline_24" />
+        app:layout_constraintTop_toBottomOf="@+id/barrier2"/>
 
-    <TextView
-        android:id="@+id/textViewLikes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/imageButtonLikes"
-        app:layout_constraintTop_toTopOf="@+id/imageButtonLikes"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButtonLikes"
-        tools:text="@sample/posts.json/data/likes" />
-
-    <ImageButton
-        android:id="@+id/imageButtonShares"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/materialButtonShares"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/common_spacing"
         android:layout_marginTop="@dimen/common_spacing"
-        android:background="@android:color/transparent"
-        android:padding="@dimen/common_spacing"
-        app:layout_constraintStart_toEndOf="@+id/textViewLikes"
+        app:icon="@drawable/ic_share_external_24"
+        app:iconTint="?colorControlNormal"
+        app:backgroundTint="@android:color/transparent"
+        android:textColor="?colorControlNormal"
+        tools:text="@sample/posts.json/data/shares"
+        app:layout_constraintStart_toEndOf="@+id/materialButtonLikes"
         app:layout_constraintTop_toBottomOf="@+id/barrier2"
-        app:srcCompat="@drawable/ic_share_external_24" />
-
-    <TextView
-        android:id="@+id/textViewShares"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/imageButtonShares"
-        app:layout_constraintTop_toTopOf="@+id/imageButtonShares"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButtonShares"
-        tools:text="@sample/posts.json/data/shares" />
+        />
 
     <ImageView
         android:id="@+id/imageViewViews"
