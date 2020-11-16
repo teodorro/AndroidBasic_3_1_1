@@ -52,7 +52,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/common_spacing"
-        android:text="asdfdsafsa"
         app:layout_constraintBottom_toBottomOf="@+id/imageButtonCloseEditing"
         app:layout_constraintEnd_toStartOf="@id/imageButtonCloseEditing"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +60,6 @@
         android:singleLine="true"
         android:ellipsize="end" />
 
-
     <ImageButton
         android:id="@+id/imageButtonCloseEditing"
         android:layout_width="wrap_content"
@@ -69,36 +67,45 @@
         android:padding="@dimen/common_spacing"
         android:background="@android:color/transparent"
         app:layout_constraintTop_toTopOf="@id/barrier1"
-        app:layout_constraintBottom_toTopOf="@id/editTextContent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_close_24" />
 
+<!--    <EditText-->
+<!--        android:id="@+id/editTextContent"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:hint="@string/post_text"-->
+<!--        android:importantForAutofill="no"-->
+<!--        android:inputType="textMultiLine"-->
+<!--        android:padding="@dimen/common_spacing"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/imageButtonSave"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/imageButtonSave"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/imageButtonSave" />-->
 
-    <EditText
-        android:id="@+id/editTextContent"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:hint="@string/post_text"
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine"
-        android:padding="@dimen/common_spacing"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButtonSave"
-        app:layout_constraintEnd_toStartOf="@id/imageButtonSave"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageButtonSave" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/imageButtonSave"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:padding="@dimen/common_spacing"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/groupRevert"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toEndOf="@id/editTextContent"-->
+<!--        app:srcCompat="@drawable/ic_baseline_done_24" />-->
 
-    <ImageButton
-        android:id="@+id/imageButtonSave"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingButtonAddPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:padding="@dimen/common_spacing"
-        app:layout_constraintTop_toBottomOf="@id/groupRevert"
+        android:src="@drawable/ic_baseline_add_24"
+        android:layout_marginRight="@dimen/common_spacing"
+        android:layout_marginBottom="@dimen/common_spacing"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/editTextContent"
-        app:srcCompat="@drawable/ic_baseline_done_24" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 

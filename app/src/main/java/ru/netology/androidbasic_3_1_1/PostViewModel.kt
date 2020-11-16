@@ -2,6 +2,7 @@ package ru.netology.androidbasic_3_1_1
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.lang.NullPointerException
 
 private val empty = Post(
     id = 0,
@@ -27,6 +28,12 @@ class PostViewModel: ViewModel() {
 
     fun edit(post: Post) {
         edited.value = post
+    }
+
+    fun edit(id: Long, content: String) {
+//        var post = data.value?.firstOrNull{ x: Post -> x.id == id}
+//            ?: throw NullPointerException("No post to edit")
+//        post.content
     }
 
     fun save(){

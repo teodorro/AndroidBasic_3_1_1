@@ -6,4 +6,7 @@
     <string name="post_text">Post text</string>
     <string name="error_empty_content">Smth wrong</string>
     <string name="chooser_share_post">Show text</string>
+    <string name="activity_new_post_hint">Text of your new post</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 </resources>
