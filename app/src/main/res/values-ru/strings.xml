@@ -2,4 +2,9 @@
 <resources>
     <string name="app_name">НМедиа</string>
     <string name="hello_nmedia" translatable="false">НМедиа!</string>
+    <string name="menu_edit">Редактировать</string>
+    <string name="menu_remove">Удалить</string>
+    <string name="post_text">Запостить</string>
+    <string name="error_empty_content">Что-то не так</string>
+    <string name="chooser_share_post">Показать текст</string>
 </resources>

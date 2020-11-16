@@ -1,6 +1,7 @@
 package ru.netology.androidbasic_3_1_1
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -29,6 +30,22 @@ class MainActivity : AppCompatActivity() {
                 viewModel.removeById(post.id)
             }
             override fun onShare(post: Post){
+                Intent(Intent.ACTION_SEND)
+                    .putExtra(Intent.EXTRA_TEXT, post.content)
+                    .setType("text/plain")
+                    .also {
+                        if (it.resolveActivity(packageManager) == null){
+                            Toast.makeText(
+                                this@MainActivity,
+                                "app not found",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else{
+                            Intent.createChooser(it, getString(R.string.chooser_share_post))
+                                .also(::startActivity);
+                        }
+                    }
+
                 viewModel.shareById(post.id)
             }
         })
