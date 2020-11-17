@@ -10,4 +10,5 @@
     <string name="activity_new_post_hint">Текст вашего нового поста</string>
     <string name="cancel">Отмена</string>
     <string name="save">Сохранить</string>
+    <string name="message_not_empty">Сообщение не должно быть пустым</string>
 </resources>

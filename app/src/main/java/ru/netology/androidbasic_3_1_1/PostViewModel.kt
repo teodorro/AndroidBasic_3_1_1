@@ -31,9 +31,7 @@ class PostViewModel: ViewModel() {
     }
 
     fun edit(id: Long, content: String) {
-//        var post = data.value?.firstOrNull{ x: Post -> x.id == id}
-//            ?: throw NullPointerException("No post to edit")
-//        post.content
+        repository.editPostContentById(id, content)
     }
 
     fun save(){

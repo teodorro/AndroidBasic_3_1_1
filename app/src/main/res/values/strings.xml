@@ -9,4 +9,5 @@
     <string name="activity_new_post_hint">Text of your new post</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="message_not_empty">Message should not be empty</string>
 </resources>

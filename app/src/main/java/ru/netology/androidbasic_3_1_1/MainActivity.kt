@@ -2,14 +2,15 @@ package ru.netology.androidbasic_3_1_1
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.observe
 import ru.netology.androidbasic_3_1_1.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -66,55 +67,11 @@ class MainActivity : AppCompatActivity() {
             if (post.id == 0L) {
                 return@observe
             }
-//            with (binding.editTextContent){
-//                requestFocus()
-//                setText(post.content)
-//            }
             binding.groupRevert.visibility = View.VISIBLE
             with(binding.textViewEditContent) {
                 text = post.content
             }
         }
-
-//        binding.imageButtonSave.setOnClickListener {
-//            with(binding.editTextContent){
-//                if (TextUtils.isEmpty(text)){
-//                    Toast.makeText(
-//                        this@MainActivity,
-//                        context.getString(R.string.error_empty_content),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    binding.groupRevert.visibility = View.GONE
-//                    return@setOnClickListener
-//                }
-//
-//                viewModel.changeContent(text.toString())
-//                viewModel.save()
-//
-//                setText("")
-//                clearFocus()
-//                AndroidUtils.hideKeyboard(this)
-//            }
-//            binding.groupRevert.visibility = View.GONE
-//        }
-//
-//        binding.imageButtonCloseEditing.setOnClickListener {
-//            binding.groupRevert.visibility = View.GONE
-//            with(binding.editTextContent){
-//                if (TextUtils.isEmpty(text)){
-//                    Toast.makeText(
-//                        this@MainActivity,
-//                        context.getString(R.string.error_empty_content),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    return@setOnClickListener
-//                }
-//
-//                setText("")
-//                clearFocus()
-//                AndroidUtils.hideKeyboard(this)
-//            }
-//        }
 
         binding.floatingButtonAddPost.setOnClickListener {
             startActivityForResult(Intent(this, NewPostActivity::class.java), NEW_POST_REQUEST_CODE)
@@ -125,7 +82,8 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(
             Intent(this, EditPostActivity::class.java)
                 .putExtra(Intent.EXTRA_TEXT, post.content).putExtra(Intent.EXTRA_UID, post.id),
-            EDIT_POST_REQUEST_CODE)
+            EDIT_POST_REQUEST_CODE
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -156,10 +114,9 @@ class MainActivity : AppCompatActivity() {
                 ).show()
                 return
             }
-            val id = data.getIntExtra(Intent.EXTRA_UID, -1)
+            val id = data.getLongExtra(Intent.EXTRA_UID, -1)
 
-            viewModel.edit(id.toLong(), text.toString())
-            viewModel.save()
+            viewModel.edit(id, text.toString())
             AndroidUtils.hideKeyboard(binding.root)
         }
     }

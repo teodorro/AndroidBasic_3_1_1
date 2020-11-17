@@ -94,4 +94,16 @@ class PostRepositoryInMemoryImpl : PostRepository {
         }
         data.value = posts
     }
+
+    override fun editPostContentById(id: Long, postContent: String) {
+        posts = posts.map{
+            if (it.id != id)
+                it
+            else
+                it.copy(
+                    content = postContent
+                )
+        }
+        data.value = posts
+    }
 }
