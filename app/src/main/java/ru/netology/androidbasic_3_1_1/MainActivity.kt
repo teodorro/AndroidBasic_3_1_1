@@ -2,6 +2,7 @@ package ru.netology.androidbasic_3_1_1
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val NEW_POST_REQUEST_CODE = 1
         private const val EDIT_POST_REQUEST_CODE = 2
+        private const val VIDEO_PLAY_REQUEST_CODE = 3
     }
 
     private val viewModel: PostViewModel by viewModels()
@@ -46,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                         if (it.resolveActivity(packageManager) == null) {
                             Toast.makeText(
                                 this@MainActivity,
-                                "app not found",
+                                getString(R.string.app_not_found),
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
@@ -57,7 +59,18 @@ class MainActivity : AppCompatActivity() {
 
                 viewModel.shareById(post.id)
             }
+
+            override fun onPlay(post: Post) {
+                if (post.video.isNullOrBlank())
+                    return
+                val uri = Uri.parse(post.video)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+//                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+//                }
+            }
         })
+
         binding.recylerViewPosts.adapter = adapter
         viewModel.data.observe(this) { posts ->
             adapter.submitList(posts)

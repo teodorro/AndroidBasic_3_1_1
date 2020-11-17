@@ -57,6 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageViewAvatar"/>
 
+
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier1"
         android:layout_width="wrap_content"
@@ -78,12 +79,36 @@
         app:layout_constraintTop_toBottomOf="@+id/barrier1"
         tools:text="@sample/posts.json/data/message" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constrLayoutPlay"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMessage">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/materialButtonPlay"
+            style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?colorControlNormal"
+            app:backgroundTint="@android:color/transparent"
+            app:icon="@drawable/ic_baseline_play_arrow_24"
+            app:iconTint="@color/selector_like_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="textViewMessage"
+        app:constraint_referenced_ids="constrLayoutPlay"
         tools:layout_editor_absoluteY="72dp" />
 
     <com.google.android.material.button.MaterialButton

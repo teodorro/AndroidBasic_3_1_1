@@ -10,4 +10,5 @@
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="message_not_empty">Message should not be empty</string>
+    <string name="app_not_found">app not found</string>
 </resources>

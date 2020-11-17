@@ -11,4 +11,5 @@
     <string name="cancel">Отмена</string>
     <string name="save">Сохранить</string>
     <string name="message_not_empty">Сообщение не должно быть пустым</string>
+    <string name="app_not_found">app not found</string>
 </resources>
