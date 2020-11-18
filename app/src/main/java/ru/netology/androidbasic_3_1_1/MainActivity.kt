@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val NEW_POST_REQUEST_CODE = 1
         private const val EDIT_POST_REQUEST_CODE = 2
-        private const val VIDEO_PLAY_REQUEST_CODE = 3
     }
 
     private val viewModel: PostViewModel by viewModels()
@@ -65,9 +64,7 @@ class MainActivity : AppCompatActivity() {
                     return
                 val uri = Uri.parse(post.video)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
-//                if (intent.resolveActivity(packageManager) != null) {
-                    startActivity(intent)
-//                }
+                startActivity(intent)
             }
         })
 
@@ -104,31 +101,13 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == NEW_POST_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             val text = data.getStringExtra(Intent.EXTRA_TEXT)
-            if (text.isNullOrEmpty()) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.error_empty_content),
-                    Toast.LENGTH_SHORT
-                ).show()
-                return
-            }
-
             viewModel.changeContent(text.toString())
             viewModel.save()
             AndroidUtils.hideKeyboard(binding.root)
         }
         if (requestCode == EDIT_POST_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             val text = data.getStringExtra(Intent.EXTRA_TEXT)
-            if (text.isNullOrEmpty()) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.error_empty_content),
-                    Toast.LENGTH_SHORT
-                ).show()
-                return
-            }
             val id = data.getLongExtra(Intent.EXTRA_UID, -1)
-
             viewModel.edit(id, text.toString())
             AndroidUtils.hideKeyboard(binding.root)
         }
