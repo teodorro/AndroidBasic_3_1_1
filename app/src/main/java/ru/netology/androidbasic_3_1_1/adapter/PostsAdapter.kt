@@ -1,13 +1,18 @@
-package ru.netology.androidbasic_3_1_1
+package ru.netology.androidbasic_3_1_1.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import ru.netology.androidbasic_3_1_1.OnInteractionListener
+import ru.netology.androidbasic_3_1_1.Post
+import ru.netology.androidbasic_3_1_1.PostDiffCallback
+import ru.netology.androidbasic_3_1_1.viewHolder.PostViewHolder
 import ru.netology.androidbasic_3_1_1.databinding.CardPostBinding
 
 
 class PostsAdapter(
-    private val onInteractionListener: OnInteractionListener)
+    private val onInteractionListener: OnInteractionListener
+)
     : ListAdapter<Post, PostViewHolder>(PostDiffCallback()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {

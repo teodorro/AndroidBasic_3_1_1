@@ -1,7 +1,8 @@
-package ru.netology.androidbasic_3_1_1
+package ru.netology.androidbasic_3_1_1.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import ru.netology.androidbasic_3_1_1.Post
 
 class PostRepositoryInMemoryImpl : PostRepository {
     private var nextId: Long = 4;

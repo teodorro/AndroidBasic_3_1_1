@@ -1,10 +1,11 @@
-package ru.netology.androidbasic_3_1_1
+package ru.netology.androidbasic_3_1_1.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import java.lang.NullPointerException
+import ru.netology.androidbasic_3_1_1.Post
+import ru.netology.androidbasic_3_1_1.repository.PostRepository
+import ru.netology.androidbasic_3_1_1.repository.PostRepositoryFileImpl
 
 private val empty = Post(
     id = 0,

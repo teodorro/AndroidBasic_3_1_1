@@ -1,10 +1,12 @@
-package ru.netology.androidbasic_3_1_1
+package ru.netology.androidbasic_3_1_1.viewHolder
 
 
-import android.net.Uri
 import android.view.View
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import ru.netology.androidbasic_3_1_1.OnInteractionListener
+import ru.netology.androidbasic_3_1_1.Post
+import ru.netology.androidbasic_3_1_1.R
 import ru.netology.androidbasic_3_1_1.databinding.CardPostBinding
 
 class PostViewHolder(

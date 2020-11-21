@@ -1,6 +1,7 @@
-package ru.netology.androidbasic_3_1_1
+package ru.netology.androidbasic_3_1_1.repository
 
 import androidx.lifecycle.LiveData
+import ru.netology.androidbasic_3_1_1.Post
 
 interface PostRepository {
     fun getAll(): LiveData<List<Post>>

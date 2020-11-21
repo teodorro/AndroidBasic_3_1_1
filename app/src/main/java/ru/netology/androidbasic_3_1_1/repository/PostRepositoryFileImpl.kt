@@ -1,14 +1,15 @@
-package ru.netology.androidbasic_3_1_1
+package ru.netology.androidbasic_3_1_1.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import ru.netology.androidbasic_3_1_1.Post
 
 class PostRepositoryFileImpl(
     private val context: Context
-) : PostRepository{
+) : PostRepository {
     private val gson = Gson()
     private val type = TypeToken.getParameterized(List::class.java, Post::class.java).type
     private val filename = "posts.json"
