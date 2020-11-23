@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import ru.netology.androidbasic_3_1_1.AndroidUtils
 import ru.netology.androidbasic_3_1_1.R
+import ru.netology.androidbasic_3_1_1.activity.FeedFragment.Companion.textArg
 import ru.netology.androidbasic_3_1_1.databinding.FragmentEditPostBinding
 import ru.netology.androidbasic_3_1_1.viewModel.PostViewModel
 
 class EditPostFragment : Fragment() {
-    private var postId: Long = -1
     private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
     override fun onCreateView(
@@ -23,32 +25,29 @@ class EditPostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentEditPostBinding.inflate(layoutInflater, container, false)
+        binding.materialButtonSave.setOnClickListener {
+            val content = binding.textInputEditText.text.toString()
+            if (content.isNullOrBlank()){
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.message_not_empty),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+            viewModel.changeContent(binding.textInputEditText.text.toString())
+            viewModel.save()
+            AndroidUtils.hideKeyboard(requireView())
+            findNavController().navigateUp()
+        }
+        binding.materialButtonCancel.setOnClickListener {
+            AndroidUtils.hideKeyboard(requireView())
+            findNavController().navigateUp()
+        }
 
+        arguments?.textArg?.let(binding.textInputEditText::setText)
         binding.textInputEditText.requestFocus()
-//        binding.textInputEditText.setText(this.intent.getStringExtra(Intent.EXTRA_TEXT))
-//        postId = this.intent.getLongExtra(Intent.EXTRA_UID, -1)
-//
-//        binding.materialButtonSave.setOnClickListener {
-//            if (binding.textInputEditText.text.isNullOrEmpty()) {
-//                Toast.makeText(
-//                    this,
-//                    getString(R.string.message_not_empty),
-//                    Toast.LENGTH_LONG
-//                ).show()
-//                return@setOnClickListener
-//            }
-//            val res = Intent()
-//                .putExtra(Intent.EXTRA_TEXT, binding.textInputEditText.text.toString())
-//                .putExtra(Intent.EXTRA_UID, postId)
-//            setResult(RESULT_OK, res)
-//            finish()
-//        }
-//
-//        binding.materialButtonCancel.setOnClickListener {
-//            val res = Intent()
-//            setResult(RESULT_CANCELED, res)
-//            finish()
-//        }
+
         return binding.root
     }
 

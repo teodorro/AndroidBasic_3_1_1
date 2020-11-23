@@ -12,26 +12,26 @@ class IntentHandlerActivity : AppCompatActivity(R.layout.activity_intent_handler
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        intent?.let{
-            if (it.action != Intent.ACTION_SEND)
-                return@let
-
-            val text = it.getStringExtra(Intent.EXTRA_TEXT)
-            if (text.isNullOrBlank()){
-                intent.removeExtra(Intent.EXTRA_TEXT)
-                findNavController(R.id.action_feedFragment_to_newPostFragment)
-                    .navigate(
-                        R.id.action_feedFragment_to_newPostFragment,
-                        Bundle().apply { textArg = text }
-                    )
-//                Snackbar.make(binding.root, "content can't be ampty", LENGTH_INDEFINITIVE)
-//                    .setAction(android.R.string.ok){
-//                        finish()
-//                    }
-//                    .show()
-                return@let
-            }
-            // TODO: handle text
-        }
+//        intent?.let{
+//            if (it.action != Intent.ACTION_SEND)
+//                return@let
+//
+//            val text = it.getStringExtra(Intent.EXTRA_TEXT)
+//            if (text.isNullOrBlank()){
+//                intent.removeExtra(Intent.EXTRA_TEXT)
+//                findNavController(R.id.action_feedFragment_to_editPostFragment)
+//                    .navigate(
+//                        R.id.action_feedFragment_to_editPostFragment,
+//                        Bundle().apply { textArg = text }
+//                    )
+////                Snackbar.make(binding.root, "content can't be ampty", LENGTH_INDEFINITIVE)
+////                    .setAction(android.R.string.ok){
+////                        finish()
+////                    }
+////                    .show()
+//                return@let
+//            }
+//            // TODO: handle text
+//        }
     }
 }

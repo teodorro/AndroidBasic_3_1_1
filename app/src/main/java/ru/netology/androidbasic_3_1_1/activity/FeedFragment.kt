@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import ru.netology.androidbasic_3_1_1.OnInteractionListener
 import ru.netology.androidbasic_3_1_1.Post
 import ru.netology.androidbasic_3_1_1.R
+import ru.netology.androidbasic_3_1_1.StringArgs
 import ru.netology.androidbasic_3_1_1.adapter.PostsAdapter
 import ru.netology.androidbasic_3_1_1.databinding.FragmentFeedBinding
 import ru.netology.androidbasic_3_1_1.viewModel.PostViewModel
@@ -25,12 +26,7 @@ import ru.netology.androidbasic_3_1_1.viewModel.PostViewModel
 
 class FeedFragment : Fragment() {
     companion object {
-        private const val NEW_POST_REQUEST_CODE = 1
-        private const val EDIT_POST_REQUEST_CODE = 2
-        private const val TEXT_KEY = "TEXT_KEY"
-        var Bundle.textArg: String?
-            set(value) = putString(TEXT_KEY, value)
-            get() = getString(TEXT_KEY)
+        var Bundle.textArg: String? by StringArgs
     }
 
     private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
@@ -57,23 +53,23 @@ class FeedFragment : Fragment() {
             }
 
             override fun onShare(post: Post) {
-//                Intent(Intent.ACTION_SEND)
-//                    .putExtra(Intent.EXTRA_TEXT, post.content)
-//                    .setType("text/plain")
-//                    .also {
-//                        if (it.resolveActivity(packageManager) == null) {
-//                            Toast.makeText(
-//                                this@FeedFragment,
-//                                getString(R.string.app_not_found),
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                        } else {
-//                            Intent.createChooser(it, getString(R.string.chooser_share_post))
-//                                .also(::startActivity);
-//                        }
-//                    }
-//
-//                viewModel.shareById(post.id)
+                Intent(Intent.ACTION_SEND)
+                    .putExtra(Intent.EXTRA_TEXT, post.content)
+                    .setType("text/plain")
+                    .also {
+                        if (context?.packageManager?.let { it1 -> it.resolveActivity(it1) } == null) {
+                            Toast.makeText(
+                                this@FeedFragment.context,
+                                getString(R.string.app_not_found),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Intent.createChooser(it, getString(R.string.chooser_share_post))
+                                .also(::startActivity);
+                        }
+                    }
+
+                viewModel.shareById(post.id)
             }
 
             override fun onPlay(post: Post) {
@@ -104,18 +100,13 @@ class FeedFragment : Fragment() {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
 
-
-
         return binding.root
     }
 
     private fun editPost(post: Post) {
-
-//        startActivityForResult(
-//            Intent(this, EditPostActivity::class.java)
-//                .putExtra(Intent.EXTRA_TEXT, post.content).putExtra(Intent.EXTRA_UID, post.id),
-//            EDIT_POST_REQUEST_CODE
-//        )
+        val text = post.content
+        findNavController().navigate(R.id.action_feedFragment_to_editPostFragment,
+            Bundle().apply { textArg = text })
     }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

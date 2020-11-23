@@ -28,13 +28,20 @@ class NewPostFragment : Fragment() {
         val binding = FragmentNewPostBinding.inflate(layoutInflater, container, false)
         binding.textInputEditText.requestFocus()
         binding.materialButtonText.setOnClickListener {
-            viewModel.changeContent(binding.textInputEditText.text.toString())
+            val content = binding.textInputEditText.text.toString()
+            if (content.isNullOrBlank()){
+                Toast.makeText(
+                    this.context,
+                    getString(R.string.message_not_empty),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+            viewModel.changeContent(content)
             viewModel.save()
             AndroidUtils.hideKeyboard(requireView())
             findNavController().navigateUp()
         }
-        arguments?.textArg?.let(binding.textInputEditText::setText)
         return binding.root
     }
-
 }
