@@ -17,6 +17,9 @@
             android:id="@+id/action_feedFragment_to_editPostFragment"
             app:destination="@id/editPostFragment">
         </action>
+        <action
+            android:id="@+id/action_feedFragment_to_selectPostFragment"
+            app:destination="@id/selectPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
@@ -32,5 +35,14 @@
             android:name="txt"
             app:argType="string"
             android:defaultValue="@null"/>
+    </fragment>
+    <fragment
+        android:id="@+id/selectPostFragment"
+        android:name="ru.netology.androidbasic_3_1_1.activity.SelectPostFragment"
+        android:label="fragment_select_post"
+        tools:layout="@layout/fragment_select_post" >
+        <action
+            android:id="@+id/action_selectPostFragment_to_editPostFragment"
+            app:destination="@id/editPostFragment" />
     </fragment>
 </navigation>

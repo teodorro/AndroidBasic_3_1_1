@@ -17,6 +17,9 @@ class PostViewHolder(
         binding.apply {
             textViewAuthor.text = post.author
             textViewMessage.text = post.content
+            textViewMessage.setOnClickListener {
+                onInteractionListener.onSelectPost(post)
+            }
             textViewPublished.text = post.published
             textViewViews.text = convertIntToStr(post.views)
             materialButtonLikes.text = convertIntToStr(post.likes)

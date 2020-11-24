@@ -8,7 +8,7 @@
     tools:context=".activity.FeedFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recylerViewPosts"
+        android:id="@+id/recyclerViewPosts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/barrier1"
@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="recylerViewPosts"/>
+        app:constraint_referenced_ids="recyclerViewPosts"/>
 
 
     <androidx.constraintlayout.widget.Group

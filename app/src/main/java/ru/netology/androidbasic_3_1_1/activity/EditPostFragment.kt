@@ -12,9 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.androidbasic_3_1_1.AndroidUtils
 import ru.netology.androidbasic_3_1_1.R
+import ru.netology.androidbasic_3_1_1.activity.FeedFragment.Companion.longArg
 import ru.netology.androidbasic_3_1_1.activity.FeedFragment.Companion.textArg
 import ru.netology.androidbasic_3_1_1.databinding.FragmentEditPostBinding
 import ru.netology.androidbasic_3_1_1.viewModel.PostViewModel
+import kotlin.NullPointerException
 
 class EditPostFragment : Fragment() {
     private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
@@ -25,6 +27,13 @@ class EditPostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentEditPostBinding.inflate(layoutInflater, container, false)
+
+        val id = arguments?.longArg
+        val post = viewModel.data.value?.first { x -> x.id == id }
+            ?: throw NullPointerException("null post")
+        arguments?.textArg?.let(binding.textInputEditText::setText)
+
+
         binding.materialButtonSave.setOnClickListener {
             val content = binding.textInputEditText.text.toString()
             if (content.isNullOrBlank()){
@@ -35,6 +44,7 @@ class EditPostFragment : Fragment() {
                 ).show()
                 return@setOnClickListener
             }
+            viewModel.edit(post)
             viewModel.changeContent(binding.textInputEditText.text.toString())
             viewModel.save()
             AndroidUtils.hideKeyboard(requireView())
@@ -45,7 +55,6 @@ class EditPostFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        arguments?.textArg?.let(binding.textInputEditText::setText)
         binding.textInputEditText.requestFocus()
 
         return binding.root
