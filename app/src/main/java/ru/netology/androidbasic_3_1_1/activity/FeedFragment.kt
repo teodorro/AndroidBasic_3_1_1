@@ -1,22 +1,20 @@
 package ru.netology.androidbasic_3_1_1.activity
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import ru.netology.androidbasic_3_1_1.*
 import ru.netology.androidbasic_3_1_1.adapter.PostsAdapter
+import ru.netology.androidbasic_3_1_1.args.LongArgs
+import ru.netology.androidbasic_3_1_1.args.StringArgs
 import ru.netology.androidbasic_3_1_1.databinding.FragmentFeedBinding
 import ru.netology.androidbasic_3_1_1.viewModel.PostViewModel
 
@@ -95,23 +93,6 @@ class FeedFragment : Fragment() {
                 longArg = post.id
             })
     }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        if (requestCode == NEW_POST_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-//            val text = data.getStringExtra(Intent.EXTRA_TEXT)
-//            viewModel.changeContent(text.toString())
-//            viewModel.save()
-//            AndroidUtils.hideKeyboard(binding.root)
-//        }
-//        if (requestCode == EDIT_POST_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-//            val text = data.getStringExtra(Intent.EXTRA_TEXT)
-//            val id = data.getLongExtra(Intent.EXTRA_UID, -1)
-//            viewModel.edit(id, text.toString())
-//            AndroidUtils.hideKeyboard(binding.root)
-//        }
-//    }
 
 
 }

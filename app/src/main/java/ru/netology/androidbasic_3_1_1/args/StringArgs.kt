@@ -1,4 +1,4 @@
-package ru.netology.androidbasic_3_1_1
+package ru.netology.androidbasic_3_1_1.args
 
 import android.os.Bundle
 import kotlin.properties.ReadWriteProperty

@@ -33,7 +33,6 @@ class EditPostFragment : Fragment() {
             ?: throw NullPointerException("null post")
         arguments?.textArg?.let(binding.textInputEditText::setText)
 
-
         binding.materialButtonSave.setOnClickListener {
             val content = binding.textInputEditText.text.toString()
             if (content.isNullOrBlank()){
