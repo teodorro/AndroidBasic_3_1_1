@@ -1,12 +1,33 @@
 package ru.netology.androidbasic_3_1_1.dao
 
-import ru.netology.androidbasic_3_1_1.Post
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import ru.netology.androidbasic_3_1_1.entity.PostEntity
 
+@Dao
 interface PostDao {
-    fun getAll(): List<Post>
-    fun save(post: Post): Post
+    @Query("SELECT * FROM PostEntity ORDER BY id DESC")
+    fun getAll(): LiveData<List<PostEntity>>
+
+    @Insert
+    fun save(post: PostEntity)
+
+    @Query("DELETE FROM PostEntity WHERE id = :id")
     fun removeById(id: Long)
-    fun updateLikes(id: Long, likedByMe: Boolean, likes: Int)
-    fun updateShares(id: Long, shares: Int)
+
+    @Query("""
+        UPDATE PostEntity SET 
+            likes = likes + CASE WHEN likedByMe THEN -1 ELSE 1 END, 
+            likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END 
+        WHERE ID = :id;
+    """)
+    fun likeById(id: Long)
+
+    @Query("UPDATE PostEntity SET shares = shares + 1 WHERE id = :id")
+    fun shareById(id: Long)
+
+    @Query("UPDATE PostEntity SET content = :postContent WHERE id = :id")
     fun updatePostContent(id: Long, postContent: String)
 }

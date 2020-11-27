@@ -1,4 +1,4 @@
-package ru.netology.androidbasic_3_1_1
+package ru.netology.androidbasic_3_1_1.dto
 
 data class Post (
     val id: Long,
@@ -9,5 +9,5 @@ data class Post (
     val likes: Int,
     val shares: Int,
     val views: Int,
-    val video: String?
+    val video: String
 )

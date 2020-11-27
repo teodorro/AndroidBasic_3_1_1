@@ -2,11 +2,11 @@ package ru.netology.androidbasic_3_1_1.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.netology.androidbasic_3_1_1.Post
+import ru.netology.androidbasic_3_1_1.dto.Post
 import ru.netology.androidbasic_3_1_1.db.AppDb
 import ru.netology.androidbasic_3_1_1.repository.PostRepository
-import ru.netology.androidbasic_3_1_1.repository.PostRepositoryFileImpl
 import ru.netology.androidbasic_3_1_1.repository.PostRepositorySqliteImpl
 
 private val empty = Post(
@@ -18,16 +18,27 @@ private val empty = Post(
     likes = 0,
     views = 0,
     shares = 0,
-    video = null
+    video = ""
 )
 
-class PostViewModel(application: Application): AndroidViewModel(application) {
+class PostViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PostRepository = PostRepositorySqliteImpl(
         AppDb.getInstance(application).postDao
     )
-    val data = repository.getAll()
+    var data = repository.getAll()
+
     private val edited = MutableLiveData(empty)
     var draft: String = ""
+
+//    init {
+////        if (data.value == null || !data.value?.any()!!) {
+////            val d = (repository as PostRepositorySqliteImpl).getSamplePosts()
+////            for (post in d){
+////                edited.value = post
+////                save()
+////            }
+////        }
+//    }
 
     fun likeById(id: Long) = repository.likeById(id)
 
@@ -43,20 +54,28 @@ class PostViewModel(application: Application): AndroidViewModel(application) {
         repository.editPostContentById(id, content)
     }
 
-    fun save(){
+    fun save() {
         edited.value?.let {
             repository.save(it)
         }
         edited.value = empty
     }
 
-    fun changeContent(content: String){
+    fun changeContent(content: String) {
         edited.value?.let {
             val text = content.trim()
-            if (it.content == text){
+            if (it.content == text) {
                 return
             }
             edited.value = it.copy(content = text)
+        }
+    }
+
+    fun createSample() {
+        val d = (repository as PostRepositorySqliteImpl).getSamplePosts()
+        for (post in d) {
+            edited.value = post
+            save()
         }
     }
 }

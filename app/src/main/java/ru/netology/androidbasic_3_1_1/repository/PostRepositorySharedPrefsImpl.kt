@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import ru.netology.androidbasic_3_1_1.Post
+import ru.netology.androidbasic_3_1_1.dto.Post
 
 class PostRepositorySharedPrefsImpl(
     private val context: Context
@@ -73,7 +73,7 @@ class PostRepositorySharedPrefsImpl(
                     likes = 0,
                     shares = 0,
                     views = 0,
-                    video = null
+                    video = ""
                 )
             ) + posts
             data.value = posts

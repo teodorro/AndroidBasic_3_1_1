@@ -1,94 +1,41 @@
 package ru.netology.androidbasic_3_1_1.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import ru.netology.androidbasic_3_1_1.Post
+import androidx.lifecycle.map
+import ru.netology.androidbasic_3_1_1.dto.Post
 import ru.netology.androidbasic_3_1_1.dao.PostDao
+import ru.netology.androidbasic_3_1_1.entity.PostEntity
+import ru.netology.androidbasic_3_1_1.entity.toPost
 
 class PostRepositorySqliteImpl(
     private val dao: PostDao
 ) : PostRepository {
-    private var posts = emptyList<Post>()
-    private val data = MutableLiveData(posts)
 
-    init{
-        posts = dao.getAll()
-        if (!posts.any()){
-            posts = getSamplePosts()
-            posts.forEach { post -> save(post) }
-        }
-        data.value = posts
+    override fun getAll(): LiveData<List<Post>> = dao.getAll().map {
+        it.map { x -> x.toPost() }
     }
 
-    override fun getAll(): LiveData<List<Post>> = data
-
     override fun likeById(id: Long) {
-        val post = posts.first{x -> x.id == id}
-        val likes = if (post.likedByMe) post.likes - 1 else post.likes + 1
-        dao.updateLikes(id, !post.likedByMe, likes)
-
-        posts = posts.map {
-            if (it.id != id)
-                it
-            else
-                it.copy(
-                    likedByMe = !it.likedByMe,
-                    likes = if (it.likedByMe) it.likes - 1 else it.likes + 1
-                )
-        }
-        data.value = posts
+        dao.likeById(id)
     }
 
     override fun shareById(id: Long) {
-        val post = posts.first{x -> x.id == id}
-        val shares = post.shares + 1
-        dao.updateShares(id, shares)
-
-        posts = posts.map{
-            if (it.id != id)
-                it
-            else
-                it.copy(
-                    shares = it.shares + 1
-                )
-        }
-        data.value = posts
+        dao.shareById(id)
     }
 
     override fun removeById(id: Long) {
         dao.removeById(id)
-
-        posts = posts.filter { it.id != id }
-        data.value = posts
     }
 
     override fun save(post: Post) {
-        val id = post.id
-        val saved = dao.save(post)
-
-        posts = if (id == 0L){
-            listOf(saved) + posts
-        } else{
-            posts.map { if (it.id == id) saved else it}
-        }
-        data.value = posts
+        dao.save(PostEntity.fromPost(post))
     }
 
     override fun editPostContentById(id: Long, postContent: String) {
         dao.updatePostContent(id, postContent)
-
-        posts = posts.map{
-            if (it.id != id)
-                it
-            else
-                it.copy(
-                    content = postContent
-                )
-        }
-        data.value = posts
     }
 
-    private fun getSamplePosts(): List<Post>{
+    public fun getSamplePosts(): List<Post>{
         return listOf<Post>(
             Post(
                 id = 3,
@@ -121,7 +68,7 @@ class PostRepositorySqliteImpl(
                 likes = 5,
                 shares = 999,
                 views = 1500000,
-                video = null
+                video = ""
             )
         )
     }

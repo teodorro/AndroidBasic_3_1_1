@@ -16,6 +16,7 @@ import ru.netology.androidbasic_3_1_1.adapter.PostsAdapter
 import ru.netology.androidbasic_3_1_1.args.LongArgs
 import ru.netology.androidbasic_3_1_1.args.StringArgs
 import ru.netology.androidbasic_3_1_1.databinding.FragmentFeedBinding
+import ru.netology.androidbasic_3_1_1.dto.Post
 import ru.netology.androidbasic_3_1_1.viewModel.PostViewModel
 
 

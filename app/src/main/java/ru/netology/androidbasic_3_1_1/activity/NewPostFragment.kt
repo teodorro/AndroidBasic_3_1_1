@@ -27,7 +27,7 @@ class NewPostFragment : Fragment() {
     ): View? {
         val binding = FragmentNewPostBinding.inflate(layoutInflater, container, false)
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.draft = binding.textInputEditText.text.toString()
             findNavController().navigateUp()
         }

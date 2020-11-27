@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.androidbasic_3_1_1.OnInteractionListener
-import ru.netology.androidbasic_3_1_1.Post
+import ru.netology.androidbasic_3_1_1.dto.Post
 import ru.netology.androidbasic_3_1_1.R
 import ru.netology.androidbasic_3_1_1.databinding.CardPostBinding
 
@@ -45,9 +45,9 @@ class PostViewHolder(
                     }
                 }.show()
             }
-            materialButtonPlay.visibility = if (post.video == null) View.GONE else View.VISIBLE
+            materialButtonPlay.visibility = if (post.video.isNullOrBlank()) View.GONE else View.VISIBLE
             materialButtonPlay.setOnClickListener { onInteractionListener.onPlay(post) }
-            constrLayoutPlay.visibility = if (post.video == null) View.GONE else View.VISIBLE
+            constrLayoutPlay.visibility = if (post.video.isNullOrBlank()) View.GONE else View.VISIBLE
             constrLayoutPlay.setOnClickListener { onInteractionListener.onPlay(post) }
         }
     }

@@ -2,7 +2,7 @@ package ru.netology.androidbasic_3_1_1.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.netology.androidbasic_3_1_1.Post
+import ru.netology.androidbasic_3_1_1.dto.Post
 
 class PostRepositoryInMemoryImpl : PostRepository {
     private var nextId: Long = 4;
@@ -39,7 +39,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             likes = 5,
             shares = 999,
             views = 1500000,
-            video = null
+            video = ""
         )
     )
 
