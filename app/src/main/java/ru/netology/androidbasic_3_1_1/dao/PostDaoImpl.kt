@@ -71,20 +71,47 @@ class PostDaoImpl(
         }
     }
 
-    override fun likeById(id: Long) {
-        TODO("Not yet implemented")
+    override fun updateLikes(id: Long, likedByMe: Boolean, likes: Int) {
+        db.update(
+            PostColumns.TABLE,
+            ContentValues().apply {
+                put(PostColumns.COLUMN_LIKED_BY_ME, likedByMe)
+                put(PostColumns.COLUMN_LIKES, likes)
+            },
+            "${PostColumns.COLUMN_ID} = ?",
+            arrayOf(id.toString())
+        )
     }
 
     override fun removeById(id: Long) {
-        TODO("Not yet implemented")
+        db.delete(
+            PostColumns.TABLE,
+            "${PostColumns.COLUMN_ID} = ?",
+            arrayOf(id.toString())
+        )
     }
 
-    override fun shareById(id: Long) {
-        TODO("Not yet implemented")
+    override fun updateShares(id: Long, shares: Int) {
+        db.update(
+            PostColumns.TABLE,
+            ContentValues().apply {
+                put(PostColumns.COLUMN_SHARES, shares)
+            },
+            "${PostColumns.COLUMN_ID} = ?",
+            arrayOf(id.toString())
+        )
     }
 
-    override fun editPostContentById(id: Long, postContent: String) {
-        TODO("Not yet implemented")
+
+    override fun updatePostContent(id: Long, postContent: String) {
+        db.update(
+            PostColumns.TABLE,
+            ContentValues().apply {
+                put(PostColumns.COLUMN_CONTENT, postContent)
+            },
+            "${PostColumns.COLUMN_ID} = ?",
+            arrayOf(id.toString())
+        )
     }
 
     private fun map (cursor: Cursor): Post{

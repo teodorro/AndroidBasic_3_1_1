@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -24,9 +25,16 @@ class NewPostFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val binding = FragmentNewPostBinding.inflate(layoutInflater, container, false)
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            viewModel.draft = binding.textInputEditText.text.toString()
+            findNavController().navigateUp()
+        }
+
         binding.textInputEditText.requestFocus()
+        if (!viewModel.draft.isNullOrBlank())
+            binding.textInputEditText.setText(viewModel.draft)
         binding.materialButtonText.setOnClickListener {
             val content = binding.textInputEditText.text.toString()
             if (content.isNullOrBlank()){
@@ -39,6 +47,7 @@ class NewPostFragment : Fragment() {
             }
             viewModel.changeContent(content)
             viewModel.save()
+            viewModel.draft = ""
             AndroidUtils.hideKeyboard(requireView())
             findNavController().navigateUp()
         }

@@ -27,6 +27,7 @@ class PostViewModel(application: Application): AndroidViewModel(application) {
     )
     val data = repository.getAll()
     private val edited = MutableLiveData(empty)
+    var draft: String = ""
 
     fun likeById(id: Long) = repository.likeById(id)
 
