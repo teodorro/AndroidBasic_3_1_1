@@ -12,4 +12,7 @@
     <string name="save">Сохранить</string>
     <string name="message_not_empty">Сообщение не должно быть пустым</string>
     <string name="app_not_found">app not found</string>
+    <string name="notification_user_liked">%1$s юзер лайкнул %1$s</string>
+    <string name="channel_remote_name">channel_remote_name</string>
+    <string name="channel_remote_description">channel_remote_description</string>
 </resources>
