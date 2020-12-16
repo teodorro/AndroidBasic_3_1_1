@@ -14,4 +14,6 @@
     <string name="notification_user_liked">%1$s user liked %2$s</string>
     <string name="channel_remote_name">channel_remote_name</string>
     <string name="channel_remote_description">channel_remote_description</string>
+    <string name="unknown_notification">Unknown notification. Please, update application</string>
+    <string name="notification_new_post">%1$s user create new post</string>
 </resources>
