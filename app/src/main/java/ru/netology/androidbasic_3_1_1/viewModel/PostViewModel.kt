@@ -5,9 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.androidbasic_3_1_1.dto.Post
-import ru.netology.androidbasic_3_1_1.db.AppDb
+import ru.netology.androidbasic_3_1_1.model.FeedModel
 import ru.netology.androidbasic_3_1_1.repository.PostRepository
+import ru.netology.androidbasic_3_1_1.repository.PostRepositoryHttpImpl
 import ru.netology.androidbasic_3_1_1.repository.PostRepositorySqliteImpl
+import java.io.IOException
+import kotlin.concurrent.thread
 
 private val empty = Post(
     id = 0,
@@ -22,25 +25,75 @@ private val empty = Post(
 )
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: PostRepository = PostRepositorySqliteImpl(
-        AppDb.getInstance(application).postDao
-    )
-    var data = repository.getAll()
-
+    private val repository: PostRepository = PostRepositoryHttpImpl()
+    private val _state = MutableLiveData(FeedModel())
+    val state: LiveData<FeedModel>
+        get() = _state
     private val edited = MutableLiveData(empty)
     var draft: String = ""
 
-//    init {
-////        if (data.value == null || !data.value?.any()!!) {
-////            val d = (repository as PostRepositorySqliteImpl).getSamplePosts()
-////            for (post in d){
-////                edited.value = post
-////                save()
-////            }
-////        }
-//    }
 
-    fun likeById(id: Long) = repository.likeById(id)
+    init {
+        getPosts()
+    }
+
+    fun getPosts() {
+        thread {
+            _state.postValue(FeedModel(loading = true))
+            try {
+                val posts = (repository as PostRepositoryHttpImpl).getAll()
+                _state.postValue(
+                    FeedModel(
+                        posts.value as List<Post>,
+                        empty = (posts.value as List<Post>).isEmpty()
+                    )
+                )
+            } catch (e: IOException) {
+                _state.postValue(FeedModel(error = true))
+            }
+        }
+    }
+
+    fun likeById(id: Long) {
+        thread {
+            if (state.value == null)
+                throw NullPointerException("state.value == null, that's impossible")
+            _state.postValue(
+                FeedModel(
+                    posts = _state.value!!.posts,
+                    loading = true
+                )
+            )
+            try {
+                val initialPosts = state.value!!.posts
+                val post = initialPosts.first { x -> x.id == id }
+
+                if (!post.likedByMe)
+                    repository.likeById(id)
+                else
+                    (repository as PostRepositoryHttpImpl).dislikeById(id)
+
+                val posts = initialPosts.map {
+                    if (it.id != id)
+                        it
+                    else
+                        it.copy(
+                            likedByMe = !it.likedByMe,
+                            likes = if (it.likedByMe) it.likes - 1 else it.likes + 1
+                        )
+                }
+                _state.postValue(
+                    FeedModel(
+                        posts,
+                        empty = posts.isEmpty()
+                    )
+                )
+
+            } catch (e: Exception) {
+                _state.postValue(FeedModel(error = true))
+            }
+        }
+    }
 
     fun shareById(id: Long) = repository.shareById(id)
 

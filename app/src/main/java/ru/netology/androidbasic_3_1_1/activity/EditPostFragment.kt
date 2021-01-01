@@ -1,13 +1,10 @@
 package ru.netology.androidbasic_3_1_1.activity
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -30,7 +27,7 @@ class EditPostFragment : Fragment() {
         val binding = FragmentEditPostBinding.inflate(layoutInflater, container, false)
 
         val id = arguments?.longArg
-        val post = viewModel.data.value?.first { x -> x.id == id }
+        val post = viewModel.state.value?.posts?.first { x -> x.id == id }
             ?: throw NullPointerException("null post")
         arguments?.textArg?.let(binding.textInputEditText::setText)
 

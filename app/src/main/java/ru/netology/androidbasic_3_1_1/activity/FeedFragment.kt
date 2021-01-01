@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -45,10 +46,19 @@ class FeedFragment : Fragment() {
         })
 
         binding.recyclerViewPosts.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { posts -> adapter.submitList(posts) }
+        viewModel.state.observe(viewLifecycleOwner) { model ->
+            adapter.submitList(model.posts)
+            binding.errorGroup.isVisible = model.error
+            binding.emptyText.isVisible = model.empty
+            binding.progress.isVisible = model.loading
+        }
 
         binding.floatingButtonAddPost.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+        }
+
+        binding.errorButton.setOnClickListener {
+            viewModel.getPosts()
         }
 
         return binding.root

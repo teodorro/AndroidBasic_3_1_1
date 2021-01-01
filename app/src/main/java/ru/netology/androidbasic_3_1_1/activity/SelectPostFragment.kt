@@ -21,8 +21,6 @@ import ru.netology.androidbasic_3_1_1.databinding.FragmentSelectPostBinding
 import ru.netology.androidbasic_3_1_1.viewModel.PostViewModel
 
 class SelectPostFragment : Fragment() {
-
-
     private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
     override fun onCreateView(
@@ -33,7 +31,7 @@ class SelectPostFragment : Fragment() {
         val binding = FragmentSelectPostBinding.inflate(layoutInflater, container, false)
 
         val id = arguments?.longArg
-        val post = viewModel.data.value?.first { x -> x.id == id }
+        val post = viewModel.state.value?.posts?.first { x -> x.id == id }
 
         val adapter = PostsAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) { editPost(post) }
@@ -45,7 +43,7 @@ class SelectPostFragment : Fragment() {
         })
 
         binding.recyclerSelectedPost.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner) { adapter.submitList(mutableListOf(post)) }
+        viewModel.state.observe(viewLifecycleOwner) { adapter.submitList(mutableListOf(post)) }
 
         return binding.root
     }
