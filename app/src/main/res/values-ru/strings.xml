@@ -12,7 +12,7 @@
     <string name="save">Сохранить</string>
     <string name="message_not_empty">Сообщение не должно быть пустым</string>
     <string name="app_not_found">app not found</string>
-    <string name="notification_user_liked">%1$s юзер лайкнул %1$s</string>
+    <string name="notification_user_liked">%1$s юзер лайкнул %2$s</string>
     <string name="channel_remote_name">Название канала</string>
     <string name="channel_remote_description">Описание канала</string>
     <string name="unknown_notification">Неизвестное уведомление. Пожалуйста, обновите приложение</string>
