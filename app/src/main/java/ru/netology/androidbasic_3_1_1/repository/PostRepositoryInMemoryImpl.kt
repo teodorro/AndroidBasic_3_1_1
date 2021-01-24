@@ -47,6 +47,10 @@ class PostRepositoryInMemoryImpl : PostRepository {
 
     override fun getAll(): LiveData<List<Post>> = data
 
+    override fun getAllAsync(callback: GetAllCallback) {
+        TODO("Not yet implemented")
+    }
+
     override fun likeById(id: Long) {
         posts = posts.map {
             if (it.id != id)

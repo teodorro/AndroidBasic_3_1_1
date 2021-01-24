@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.androidbasic_3_1_1.dto.Post
 import ru.netology.androidbasic_3_1_1.model.FeedModel
+import ru.netology.androidbasic_3_1_1.repository.GetAllCallback
 import ru.netology.androidbasic_3_1_1.repository.PostRepository
 import ru.netology.androidbasic_3_1_1.repository.PostRepositoryHttpImpl
 import ru.netology.androidbasic_3_1_1.repository.PostRepositorySqliteImpl
@@ -34,7 +35,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
 
     init {
-        getPosts()
+        getPostsAsync()
     }
 
     fun getPosts() {
@@ -52,6 +53,18 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 _state.postValue(FeedModel(error = true))
             }
         }
+    }
+
+    fun getPostsAsync(){
+        _state.value = FeedModel(loading = true)
+        repository.getAllAsync(object : GetAllCallback {
+            override fun onSuccess(posts: List<Post>) {
+                _state.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
+            }
+            override fun onError(e: Exception) {
+                _state.postValue(FeedModel(error = true))
+            }
+        })
     }
 
     fun likeById(id: Long) {

@@ -23,6 +23,28 @@ class PostRepositoryHttpImpl : PostRepository {
         private val jsonType = "application/json".toMediaType()
     }
 
+    override fun getAllAsync(callback: GetAllCallback) {
+        val request: Request = Request.Builder()
+            .url("${BASE_URL}/api/slow/posts")
+            .build()
+
+        client.newCall(request)
+            .enqueue(object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    response.body?.use {
+                        try {
+                            callback.onSuccess(gson.fromJson(it.string(), typeToken.type))
+                        } catch (e: Exception) {
+                            callback.onError(e)
+                        }
+                    }
+                }
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onError(e)
+                }
+            })
+    }
+
     override fun getAll(): LiveData<List<Post>> {
         val request: Request = Request.Builder()
             .url("${BASE_URL}/api/slow/posts")

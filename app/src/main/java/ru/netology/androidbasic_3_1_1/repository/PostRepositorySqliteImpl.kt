@@ -15,6 +15,10 @@ class PostRepositorySqliteImpl(
         it.map { x -> x.toPost() }
     }
 
+    override fun getAllAsync(callback: GetAllCallback) {
+        TODO("Not yet implemented")
+    }
+
     override fun likeById(id: Long) {
         dao.likeById(id)
     }

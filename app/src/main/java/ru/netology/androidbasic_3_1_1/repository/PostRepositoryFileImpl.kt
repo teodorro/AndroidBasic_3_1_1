@@ -31,11 +31,15 @@ class PostRepositoryFileImpl(
             }
             data.value = posts
         }
-        nextId = posts.map { x -> x.id }.max()!! + 1
+        nextId = posts.map { x -> x.id }.maxOrNull()!! + 1
     }
 
     override fun getAll(): LiveData<List<Post>> {
         return data
+    }
+
+    override fun getAllAsync(callback: GetAllCallback) {
+        TODO("Not yet implemented")
     }
 
     override fun likeById(id: Long) {

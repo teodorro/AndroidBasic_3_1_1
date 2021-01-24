@@ -29,6 +29,10 @@ class PostRepositorySharedPrefsImpl(
         return data
     }
 
+    override fun getAllAsync(callback: GetAllCallback) {
+        TODO("Not yet implemented")
+    }
+
     override fun likeById(id: Long) {
         posts = posts.map {
             if (it.id != id)
