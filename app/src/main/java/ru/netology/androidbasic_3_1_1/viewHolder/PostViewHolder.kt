@@ -56,6 +56,7 @@ class PostViewHolder(
                 .load(url)
                 .placeholder(R.drawable.common_full_open_on_phone)
                 .error(R.drawable.ic_baseline_error_24)
+                .circleCrop()
                 .timeout(10_000)
                 .into(binding.imageViewAvatar)
         }
