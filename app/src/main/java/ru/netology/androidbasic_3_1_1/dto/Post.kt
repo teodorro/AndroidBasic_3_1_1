@@ -10,5 +10,6 @@ data class Post (
     val likes: Int,
     val shares: Int,
     val views: Int,
-    val video: String?
+    val video: String?,
+    val attachment: Attachment?,
 )

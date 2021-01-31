@@ -51,14 +51,26 @@ class PostViewHolder(
             constrLayoutPlay.visibility = if (post.video.isNullOrBlank()) View.GONE else View.VISIBLE
             constrLayoutPlay.setOnClickListener { onInteractionListener.onPlay(post) }
 
-            val url = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
+            val urlAvatar = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
             Glide.with(binding.imageViewAvatar)
-                .load(url)
+                .load(urlAvatar)
                 .placeholder(R.drawable.common_full_open_on_phone)
                 .error(R.drawable.ic_baseline_error_24)
                 .circleCrop()
                 .timeout(10_000)
                 .into(binding.imageViewAvatar)
+
+            imageViewAttachment.visibility == if (post.attachment == null) View.GONE else View.VISIBLE
+            constrLayoutAttachment.visibility == if (post.attachment == null) View.GONE else View.VISIBLE
+            if (post.attachment != null) {
+                val urlAttachment = "http://10.0.2.2:9999/images/${post.attachment.url}"
+                Glide.with(binding.imageViewAttachment)
+                    .load(urlAttachment)
+                    .placeholder(R.drawable.common_full_open_on_phone)
+                    .error(R.drawable.ic_baseline_error_24)
+                    .timeout(10_000)
+                    .into(binding.imageViewAttachment)
+            }
         }
     }
 

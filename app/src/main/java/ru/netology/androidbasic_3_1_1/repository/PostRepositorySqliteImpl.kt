@@ -51,7 +51,8 @@ class PostRepositorySqliteImpl(
                 likes = 9999,
                 shares = 999,
                 views = 9999999,
-                video = "http://www.youtube.com/watch?v=TfXZ1n6HUeI"
+                video = "http://www.youtube.com/watch?v=TfXZ1n6HUeI",
+                attachment = null
             ),
             Post(
                 id = 2,
@@ -63,7 +64,8 @@ class PostRepositorySqliteImpl(
                 likes = 9999,
                 shares = 999,
                 views = 9999999,
-                video = "http://yandex.ru"
+                video = "http://yandex.ru",
+                attachment = null
             ),
             Post(
                 id = 1,
@@ -75,7 +77,8 @@ class PostRepositorySqliteImpl(
                 likes = 5,
                 shares = 999,
                 views = 1500000,
-                video = ""
+                video = "",
+                attachment = null
             )
         )
     }

@@ -39,4 +39,4 @@ data class PostEntity(
 }
 
 fun PostEntity.toPost(): Post =
-    Post(id, author, authorAvatar, content, published, likedByMe, likes, shares, views, video)
+    Post(id, author, authorAvatar, content, published, likedByMe, likes, shares, views, video, null)
