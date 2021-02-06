@@ -21,9 +21,9 @@ private val empty = Post(
     published = "",
     likedByMe = false,
     likes = 0,
-    views = 0,
-    shares = 0,
-    video = "",
+//    views = 0,
+//    shares = 0,
+//    video = "",
     attachment = null
 )
 

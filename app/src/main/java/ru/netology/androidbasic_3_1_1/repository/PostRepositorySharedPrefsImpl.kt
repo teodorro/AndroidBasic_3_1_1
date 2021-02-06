@@ -48,16 +48,16 @@ class PostRepositorySharedPrefsImpl(
     }
 
     override fun shareById(id: Long) {
-        posts = posts.map{
-            if (it.id != id)
-                it
-            else
-                it.copy(
-                    shares = it.shares + 1
-                )
-        }
-        data.value = posts
-        sync()
+//        posts = posts.map{
+//            if (it.id != id)
+//                it
+//            else
+//                it.copy(
+//                    shares = it.shares + 1
+//                )
+//        }
+//        data.value = posts
+//        sync()
     }
 
     override fun removeById(id: Long) {
@@ -75,9 +75,9 @@ class PostRepositorySharedPrefsImpl(
                     likedByMe = false,
                     published = "now",
                     likes = 0,
-                    shares = 0,
-                    views = 0,
-                    video = ""
+//                    shares = 0,
+//                    views = 0,
+//                    video = ""
                 )
             ) + posts
             data.value = posts

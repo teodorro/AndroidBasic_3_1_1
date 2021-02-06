@@ -94,6 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="?colorControlNormal"
+            android:visibility="gone"
             app:backgroundTint="@android:color/transparent"
             app:icon="@drawable/ic_baseline_play_arrow_24"
             app:iconTint="@color/selector_like_color"
@@ -153,14 +154,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/common_spacing"
         android:layout_marginTop="@dimen/common_spacing"
+        android:textColor="?colorControlNormal"
+        android:visibility="gone"
+        app:backgroundTint="@android:color/transparent"
         app:icon="@drawable/ic_share_external_24"
         app:iconTint="?colorControlNormal"
-        app:backgroundTint="@android:color/transparent"
-        android:textColor="?colorControlNormal"
-        tools:text="@sample/posts.json/data/shares"
         app:layout_constraintStart_toEndOf="@+id/materialButtonLikes"
         app:layout_constraintTop_toBottomOf="@+id/barrier2"
-        />
+        tools:text="@sample/posts.json/data/shares" />
 
     <ImageView
         android:id="@+id/imageViewViews"
@@ -169,6 +170,7 @@
         android:layout_marginTop="@dimen/common_spacing"
         android:background="@android:color/transparent"
         android:padding="@dimen/common_spacing"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/textViewViews"
         app:layout_constraintTop_toBottomOf="@+id/barrier2"
         app:srcCompat="@drawable/ic_view_24" />

@@ -25,7 +25,8 @@ interface PostDao {
     """)
     fun likeById(id: Long)
 
-    @Query("UPDATE PostEntity SET shares = shares + 1 WHERE id = :id")
+//    @Query("UPDATE PostEntity SET shares = shares + 1 WHERE id = :id")
+    @Query("UPDATE PostEntity SET content = content + 1 WHERE id = :id")
     fun shareById(id: Long)
 
     @Query("UPDATE PostEntity SET content = :postContent WHERE id = :id")

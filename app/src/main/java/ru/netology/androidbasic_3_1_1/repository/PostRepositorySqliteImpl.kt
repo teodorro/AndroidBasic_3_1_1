@@ -49,9 +49,9 @@ class PostRepositorySqliteImpl(
                 published = "19 сентября в 10:12",
                 likedByMe = false,
                 likes = 9999,
-                shares = 999,
-                views = 9999999,
-                video = "http://www.youtube.com/watch?v=TfXZ1n6HUeI",
+//                shares = 999,
+//                views = 9999999,
+//                video = "http://www.youtube.com/watch?v=TfXZ1n6HUeI",
                 attachment = null
             ),
             Post(
@@ -62,9 +62,9 @@ class PostRepositorySqliteImpl(
                 published = "18 сентября в 10:12",
                 likedByMe = false,
                 likes = 9999,
-                shares = 999,
-                views = 9999999,
-                video = "http://yandex.ru",
+//                shares = 999,
+//                views = 9999999,
+//                video = "http://yandex.ru",
                 attachment = null
             ),
             Post(
@@ -75,9 +75,9 @@ class PostRepositorySqliteImpl(
                 published = "21 мая в 18:36",
                 likedByMe = false,
                 likes = 5,
-                shares = 999,
-                views = 1500000,
-                video = "",
+//                shares = 999,
+//                views = 1500000,
+//                video = "",
                 attachment = null
             )
         )

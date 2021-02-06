@@ -63,11 +63,11 @@ class SelectPostFragment : Fragment() {
     }
 
     private fun playVideo(post: Post) {
-        if (post.video.isNullOrBlank())
-            return
-        val uri = Uri.parse(post.video)
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        startActivity(intent)
+//        if (post.video.isNullOrBlank())
+//            return
+//        val uri = Uri.parse(post.video)
+//        val intent = Intent(Intent.ACTION_VIEW, uri)
+//        startActivity(intent)
     }
 
     private fun sharePost(post: Post) {

@@ -22,12 +22,12 @@ class PostViewHolder(
                 onInteractionListener.onSelectPost(post)
             }
             textViewPublished.text = post.published
-            textViewViews.text = convertIntToStr(post.views)
+//            textViewViews.text = convertIntToStr(post.views)
             materialButtonLikes.text = convertIntToStr(post.likes)
             materialButtonLikes.isChecked = post.likedByMe
             materialButtonLikes.setOnClickListener { onInteractionListener.onLike(post)}
-            materialButtonShares.text = convertIntToStr(post.shares)
-            materialButtonShares.setOnClickListener { onInteractionListener.onShare(post) }
+//            materialButtonShares.text = convertIntToStr(post.shares)
+//            materialButtonShares.setOnClickListener { onInteractionListener.onShare(post) }
             materialButtonMenu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.options_post)
@@ -46,10 +46,10 @@ class PostViewHolder(
                     }
                 }.show()
             }
-            materialButtonPlay.visibility = if (post.video.isNullOrBlank()) View.GONE else View.VISIBLE
-            materialButtonPlay.setOnClickListener { onInteractionListener.onPlay(post) }
-            constrLayoutPlay.visibility = if (post.video.isNullOrBlank()) View.GONE else View.VISIBLE
-            constrLayoutPlay.setOnClickListener { onInteractionListener.onPlay(post) }
+//            materialButtonPlay.visibility = if (post.video.isNullOrBlank()) View.GONE else View.VISIBLE
+//            materialButtonPlay.setOnClickListener { onInteractionListener.onPlay(post) }
+//            constrLayoutPlay.visibility = if (post.video.isNullOrBlank()) View.GONE else View.VISIBLE
+//            constrLayoutPlay.setOnClickListener { onInteractionListener.onPlay(post) }
 
             val urlAvatar = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
             Glide.with(binding.imageViewAvatar)

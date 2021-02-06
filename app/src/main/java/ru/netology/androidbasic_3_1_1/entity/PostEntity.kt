@@ -15,9 +15,9 @@ data class PostEntity(
     val published: String,
     val likedByMe: Boolean,
     val likes: Int = 0,
-    val shares: Int = 0,
-    val views: Int = 0,
-    val video: String?
+//    val shares: Int = 0,
+//    val views: Int = 0,
+//    val video: String?
 ) {
     companion object {
         fun fromPost(post: Post): PostEntity =
@@ -30,13 +30,14 @@ data class PostEntity(
                     published,
                     likedByMe,
                     likes,
-                    shares,
-                    views,
-                    video
+//                    shares,
+//                    views,
+//                    video
                 )
             }
     }
 }
 
 fun PostEntity.toPost(): Post =
-    Post(id, author, authorAvatar, content, published, likedByMe, likes, shares, views, video, null)
+    Post(id, author, authorAvatar, content, published, likedByMe, likes, //shares, views, video,
+        null)

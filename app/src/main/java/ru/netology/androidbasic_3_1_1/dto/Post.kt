@@ -8,8 +8,8 @@ data class Post (
     val published: String,
     val likedByMe: Boolean,
     val likes: Int,
-    val shares: Int,
-    val views: Int,
-    val video: String?,
+//    val shares: Int,
+//    val views: Int,
+//    val video: String?,
     val attachment: Attachment?,
 )

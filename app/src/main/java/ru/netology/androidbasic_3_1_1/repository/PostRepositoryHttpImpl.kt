@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import ru.netology.androidbasic_3_1_1.api.PostApiService
 import ru.netology.androidbasic_3_1_1.dto.Post
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -23,24 +24,44 @@ class PostRepositoryHttpImpl : PostRepository {
         private val jsonType = "application/json".toMediaType()
     }
 
-    override fun getAllAsync(callback: GetAllCallback) {
-        val request: Request = Request.Builder()
-            .url("${BASE_URL}/api/slow/posts")
-            .build()
+//    override fun getAllAsync(callback: GetAllCallback) {
+//        val request: Request = Request.Builder()
+//            .url("${BASE_URL}/api/slow/posts")
+//            .build()
+//
+//        client.newCall(request)
+//            .enqueue(object : Callback {
+//                override fun onResponse(call: Call, response: Response) {
+//                    response.body?.use {
+//                        try {
+//                            callback.onSuccess(gson.fromJson(it.string(), typeToken.type))
+//                        } catch (e: Exception) {
+//                            callback.onError(e)
+//                        }
+//                    }
+//                }
+//                override fun onFailure(call: Call, e: IOException) {
+//                    callback.onError(e)
+//                }
+//            })
+//    }
 
-        client.newCall(request)
-            .enqueue(object : Callback {
-                override fun onResponse(call: Call, response: Response) {
-                    response.body?.use {
-                        try {
-                            callback.onSuccess(gson.fromJson(it.string(), typeToken.type))
-                        } catch (e: Exception) {
-                            callback.onError(e)
-                        }
+    override fun getAllAsync(callback: GetAllCallback) {
+        PostApiService.api.getAll()
+            .enqueue(object : retrofit2.Callback<List<Post>>{
+                override fun onResponse(
+                    call: retrofit2.Call<List<Post>>,
+                    response: retrofit2.Response<List<Post>>
+                ) {
+                    if (response.isSuccessful){
+                        callback.onSuccess(response.body().orEmpty())
+                    } else{
+                        callback.onError(RuntimeException(response.message()))
                     }
                 }
-                override fun onFailure(call: Call, e: IOException) {
-                    callback.onError(e)
+
+                override fun onFailure(call: retrofit2.Call<List<Post>>, t: Throwable) {
+                    callback.onError(RuntimeException(t))
                 }
             })
     }

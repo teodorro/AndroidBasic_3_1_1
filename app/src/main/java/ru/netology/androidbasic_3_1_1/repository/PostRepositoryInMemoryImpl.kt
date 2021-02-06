@@ -16,9 +16,9 @@ class PostRepositoryInMemoryImpl : PostRepository {
             published = "19 сентября в 10:12",
             likedByMe = false,
             likes = 9999,
-            shares = 999,
-            views = 9999999,
-            video = "http://www.youtube.com/watch?v=TfXZ1n6HUeI",
+//            shares = 999,
+//            views = 9999999,
+//            video = "http://www.youtube.com/watch?v=TfXZ1n6HUeI",
             attachment = null
         ),
         Post(
@@ -29,9 +29,9 @@ class PostRepositoryInMemoryImpl : PostRepository {
             published = "18 сентября в 10:12",
             likedByMe = false,
             likes = 9999,
-            shares = 999,
-            views = 9999999,
-            video = "http://yandex.ru",
+//            shares = 999,
+//            views = 9999999,
+//            video = "http://yandex.ru",
             attachment = null
         ),
         Post(
@@ -42,9 +42,9 @@ class PostRepositoryInMemoryImpl : PostRepository {
             published = "21 мая в 18:36",
             likedByMe = false,
             likes = 5,
-            shares = 999,
-            views = 1500000,
-            video = "",
+//            shares = 999,
+//            views = 1500000,
+//            video = "",
             attachment = null
         )
     )
@@ -71,15 +71,15 @@ class PostRepositoryInMemoryImpl : PostRepository {
     }
 
     override fun shareById(id: Long) {
-        posts = posts.map{
-            if (it.id != id)
-                it
-            else
-                it.copy(
-                    shares = it.shares + 1
-                )
-        }
-        data.value = posts
+//        posts = posts.map{
+//            if (it.id != id)
+//                it
+//            else
+//                it.copy(
+//                    shares = it.shares + 1
+//                )
+//        }
+//        data.value = posts
     }
 
     override fun removeById(id: Long) {
@@ -96,8 +96,8 @@ class PostRepositoryInMemoryImpl : PostRepository {
                     likedByMe = false,
                     published = "now",
                     likes = 0,
-                    shares = 0,
-                    views = 0
+//                    shares = 0,
+//                    views = 0
                 )
             ) + posts
             data.value = posts
