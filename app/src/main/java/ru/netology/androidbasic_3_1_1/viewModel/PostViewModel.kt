@@ -21,9 +21,6 @@ private val empty = Post(
     published = "",
     likedByMe = false,
     likes = 0,
-//    views = 0,
-//    shares = 0,
-//    video = "",
     attachment = null
 )
 
@@ -34,32 +31,34 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         get() = _state
     private val edited = MutableLiveData(empty)
     var draft: String = ""
+    private var nextId: Long = 100500;
 
 
     init {
         getPostsAsync()
     }
 
-    fun getPosts() {
-        thread {
-            _state.postValue(FeedModel(loading = true))
-            try {
-                val posts = (repository as PostRepositoryHttpImpl).getAll()
-                _state.postValue(
-                    FeedModel(
-                        posts.value as List<Post>,
-                        empty = (posts.value as List<Post>).isEmpty()
-                    )
-                )
-            } catch (e: IOException) {
-                _state.postValue(FeedModel(error = true))
-            }
-        }
-    }
+//    fun getPosts() {
+//        thread {
+//            _state.postValue(FeedModel(loading = true))
+//            try {
+//                val posts = (repository as PostRepositoryHttpImpl).getAll()
+//                _state.postValue(
+//                    FeedModel(
+//                        posts.value as List<Post>,
+//                        empty = (posts.value as List<Post>).isEmpty()
+//                    )
+//                )
+//            } catch (e: IOException) {
+//                _state.postValue(FeedModel(error = true))
+//            }
+//        }
+//    }
 
     fun getPostsAsync() {
         _state.value = FeedModel(loading = true)
         repository.getAllAsync(object : GetAllCallback {
+
             override fun onSuccess(posts: List<Post>) {
                 _state.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
             }
@@ -119,7 +118,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun shareById(id: Long) = repository.shareById(id)
 
-    fun removeById(id: Long) = repository.removeById(id)
+//    fun removeById(id: Long) = repository.removeById(id)
 
     fun edit(post: Post) {
         edited.value = post
@@ -129,12 +128,80 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         repository.editPostContentById(id, content)
     }
 
+    fun removeById(id: Long) {
+        (repository as PostRepositoryHttpImpl).removeById(
+            id,
+            onSuccess = {
+                _state.value =
+                    FeedModel(
+                        posts = _state.value!!.posts,
+                        loading = true
+                    )
+                var posts = state.value!!.posts
+                if (posts.any { x -> x.id == id }) {
+                    posts = posts.minus(posts.first { x -> x.id == id })
+                }
+                _state.postValue(FeedModel(posts))
+            },
+            onFailure = {
+                _state.postValue(FeedModel(error = true))
+            }
+        )
+    }
+
     fun save() {
-        edited.value?.let {
-            repository.save(it)
+        edited.value?.let { it ->
+            (repository as PostRepositoryHttpImpl).save(
+                it,
+                onSuccess = {
+                    _state.value =
+                        FeedModel(
+                            posts = _state.value!!.posts,
+                            loading = true
+                        )
+                    var posts = state.value!!.posts
+                    var post = it
+                    if (post.id == 0L) {
+                        posts = listOf(
+                            post.copy(
+                                id = nextId++,
+                                author = "me",
+                                likedByMe = false,
+                                published = "now",
+                                likes = 0,
+                            )
+                        ) + posts
+                    }
+                    else {
+                        posts = posts.map {
+                            if (it.id != post.id) it else post.copy(content = post.content)
+                        }
+                    }
+                    _state.postValue(FeedModel(posts))
+
+//                    if (it.id.equals(0)){
+//                        state.value!!.posts += it
+//                    }
+//                    else{
+//                        val initialPosts = state.value!!.posts
+//                        val post = initialPosts.first { x -> x.id == it.id }
+//                        post.content = it.content
+//                    }
+                },
+                onFailure = {
+                    _state.postValue(FeedModel(error = true))
+                }
+            )
         }
         edited.value = empty
     }
+
+//    fun save() {
+//        edited.value?.let {
+//            repository.save(it)
+//        }
+//        edited.value = empty
+//    }
 
     fun changeContent(content: String) {
         edited.value?.let {
