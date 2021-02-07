@@ -1,7 +1,7 @@
 package ru.netology.androidbasic_3_1_1.activity
 
+import android.app.AlertDialog
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +38,10 @@ class FeedFragment : Fragment() {
 
         val adapter = PostsAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) { editPost(post) }
-            override fun onLike(post: Post) {viewModel.likeById(post.id) }
+            override fun onLike(post: Post) {
+                viewModel.likeById(post.id)
+                viewModel.getPostsAsync() // Совершенно не к месту, но непонятно, почему у materialButtonLikes текст в случае ошибки не меняется, а isChecked меняется, причем сразу, до запросов
+            }
             override fun onRemove(post: Post) { viewModel.removeById(post.id) }
             override fun onShare(post: Post) { sharePost(post) }
             override fun onPlay(post: Post) { playVideo(post) }
@@ -48,9 +51,17 @@ class FeedFragment : Fragment() {
         binding.recyclerViewPosts.adapter = adapter
         viewModel.state.observe(viewLifecycleOwner) { model ->
             adapter.submitList(model.posts)
-            binding.errorGroup.isVisible = model.error
+            binding.errorGroup.isVisible = model.errorReload
             binding.emptyText.isVisible = model.empty
             binding.progress.isVisible = model.loading
+            if (model.error) {
+                val positiveButtonClick = null
+                AlertDialog.Builder(this.context)
+                    .setTitle(R.string.network_error)
+                    .setMessage(model.errorMessage)
+                    .setPositiveButton(android.R.string.ok, positiveButtonClick)
+                    .show()
+            }
         }
 
         binding.floatingButtonAddPost.setOnClickListener {

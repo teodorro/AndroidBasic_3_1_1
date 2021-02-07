@@ -48,6 +48,7 @@ class NewPostFragment : Fragment() {
             viewModel.changeContent(content)
             viewModel.save()
             viewModel.draft = ""
+            viewModel.getPostsAsync()
             AndroidUtils.hideKeyboard(requireView())
             findNavController().navigateUp()
         }

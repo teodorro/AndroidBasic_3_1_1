@@ -28,11 +28,14 @@ interface PostsApi {
     @GET("posts")
     fun getAll(): Call<List<Post>>
 
-//    @POST("posts/{id}")
-//    fun getById(@Path("id") id: Long): Call<Post>
+    @POST("posts/{id}")
+    fun getById(@Path("id") id: Long): Call<Post>
 
     @POST("posts/{id}/likes")
     fun likeById(@Path("id") id: Long): Call<Post>
+
+    @DELETE("posts/{id}/likes")
+    fun unlikeById(@Path("id") id: Long): Call<Post>
 
     @POST("posts")
     fun save(@Body post: Post): Call<Post>

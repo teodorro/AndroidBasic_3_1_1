@@ -9,9 +9,6 @@ import ru.netology.androidbasic_3_1_1.model.FeedModel
 import ru.netology.androidbasic_3_1_1.repository.GetAllCallback
 import ru.netology.androidbasic_3_1_1.repository.PostRepository
 import ru.netology.androidbasic_3_1_1.repository.PostRepositoryHttpImpl
-import ru.netology.androidbasic_3_1_1.repository.PostRepositorySqliteImpl
-import java.io.IOException
-import kotlin.concurrent.thread
 
 private val empty = Post(
     id = 0,
@@ -33,27 +30,9 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     var draft: String = ""
     private var nextId: Long = 100500;
 
-
     init {
         getPostsAsync()
     }
-
-//    fun getPosts() {
-//        thread {
-//            _state.postValue(FeedModel(loading = true))
-//            try {
-//                val posts = (repository as PostRepositoryHttpImpl).getAll()
-//                _state.postValue(
-//                    FeedModel(
-//                        posts.value as List<Post>,
-//                        empty = (posts.value as List<Post>).isEmpty()
-//                    )
-//                )
-//            } catch (e: IOException) {
-//                _state.postValue(FeedModel(error = true))
-//            }
-//        }
-//    }
 
     fun getPostsAsync() {
         _state.value = FeedModel(loading = true)
@@ -64,12 +43,12 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Exception) {
-                _state.postValue(FeedModel(error = true))
+                _state.postValue(FeedModel(errorReload = true))
             }
         })
     }
 
-    fun likeById(id: Long) {
+    fun likeById(id: Long){
         if (state.value == null)
             throw NullPointerException("state.value == null, that's impossible")
         _state.value =
@@ -85,7 +64,12 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 id,
                 onSuccess = onLikeOrDislike(initialPosts, id),
                 onFailure = {
-                    _state.postValue(FeedModel(error = true))
+                    _state.postValue(
+                        FeedModel(
+                            posts = initialPosts,
+                            error = true,
+                            errorMessage = it.message ?: ""
+                        ))
                 }
             )
         else
@@ -93,7 +77,12 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 id,
                 onSuccess = onLikeOrDislike(initialPosts, id),
                 onFailure = {
-                    _state.postValue(FeedModel(error = true))
+                    _state.postValue(
+                        FeedModel(
+                            posts = initialPosts,
+                            error = true,
+                            errorMessage = it.message ?: ""
+                        ))
                 }
             )
     }
@@ -118,25 +107,20 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun shareById(id: Long) = repository.shareById(id)
 
-//    fun removeById(id: Long) = repository.removeById(id)
-
     fun edit(post: Post) {
         edited.value = post
     }
 
-    fun edit(id: Long, content: String) {
-        repository.editPostContentById(id, content)
-    }
-
     fun removeById(id: Long) {
+        _state.value =
+            FeedModel(
+                posts = _state.value!!.posts,
+                loading = true
+            )
+        val initialPosts = state.value!!.posts
         (repository as PostRepositoryHttpImpl).removeById(
             id,
             onSuccess = {
-                _state.value =
-                    FeedModel(
-                        posts = _state.value!!.posts,
-                        loading = true
-                    )
                 var posts = state.value!!.posts
                 if (posts.any { x -> x.id == id }) {
                     posts = posts.minus(posts.first { x -> x.id == id })
@@ -144,21 +128,50 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 _state.postValue(FeedModel(posts))
             },
             onFailure = {
-                _state.postValue(FeedModel(error = true))
+                _state.postValue(
+                    FeedModel(
+                        posts = initialPosts,
+                        error = true,
+                        errorMessage = it.message ?: ""
+                    ))
+            }
+        )
+    }
+
+    fun getById(id: Long) {
+        _state.value =
+            FeedModel(
+                posts = _state.value!!.posts,
+                loading = true
+            )
+        val initialPosts = state.value!!.posts
+        (repository as PostRepositoryHttpImpl).getById(
+            id,
+            onSuccess = {
+                _state.postValue(FeedModel(initialPosts))
+            },
+            onFailure = {
+                _state.postValue(
+                    FeedModel(
+                        posts = initialPosts,
+                        error = true,
+                        errorMessage = it.message ?: ""
+                    ))
             }
         )
     }
 
     fun save() {
+        _state.value =
+            FeedModel(
+                posts = _state.value!!.posts,
+                loading = true
+            )
+        val initialPosts = state.value!!.posts
         edited.value?.let { it ->
             (repository as PostRepositoryHttpImpl).save(
                 it,
                 onSuccess = {
-                    _state.value =
-                        FeedModel(
-                            posts = _state.value!!.posts,
-                            loading = true
-                        )
                     var posts = state.value!!.posts
                     var post = it
                     if (post.id == 0L) {
@@ -178,30 +191,19 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                         }
                     }
                     _state.postValue(FeedModel(posts))
-
-//                    if (it.id.equals(0)){
-//                        state.value!!.posts += it
-//                    }
-//                    else{
-//                        val initialPosts = state.value!!.posts
-//                        val post = initialPosts.first { x -> x.id == it.id }
-//                        post.content = it.content
-//                    }
                 },
                 onFailure = {
-                    _state.postValue(FeedModel(error = true))
+                    _state.postValue(
+                        FeedModel(
+                            posts = initialPosts,
+                            error = true,
+                            errorMessage = it.message ?: ""
+                        ))
                 }
             )
         }
         edited.value = empty
     }
-
-//    fun save() {
-//        edited.value?.let {
-//            repository.save(it)
-//        }
-//        edited.value = empty
-//    }
 
     fun changeContent(content: String) {
         edited.value?.let {
@@ -210,14 +212,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 return
             }
             edited.value = it.copy(content = text)
-        }
-    }
-
-    fun createSample() {
-        val d = (repository as PostRepositorySqliteImpl).getSamplePosts()
-        for (post in d) {
-            edited.value = post
-            save()
         }
     }
 }

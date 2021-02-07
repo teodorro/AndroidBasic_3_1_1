@@ -3,6 +3,7 @@ package ru.netology.androidbasic_3_1_1.viewHolder
 
 import android.view.View
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.netology.androidbasic_3_1_1.OnInteractionListener
@@ -23,9 +24,13 @@ class PostViewHolder(
             }
             textViewPublished.text = post.published
 //            textViewViews.text = convertIntToStr(post.views)
+
             materialButtonLikes.text = convertIntToStr(post.likes)
             materialButtonLikes.isChecked = post.likedByMe
-            materialButtonLikes.setOnClickListener { onInteractionListener.onLike(post)}
+            materialButtonLikes.setOnClickListener {
+                onInteractionListener.onLike(post)
+            }
+
 //            materialButtonShares.text = convertIntToStr(post.shares)
 //            materialButtonShares.setOnClickListener { onInteractionListener.onShare(post) }
             materialButtonMenu.setOnClickListener {
@@ -60,8 +65,8 @@ class PostViewHolder(
                 .timeout(10_000)
                 .into(binding.imageViewAvatar)
 
-            imageViewAttachment.visibility == if (post.attachment == null) View.GONE else View.VISIBLE
-            constrLayoutAttachment.visibility == if (post.attachment == null) View.GONE else View.VISIBLE
+            imageViewAttachment.isVisible = post.attachment != null
+            constrLayoutAttachment.isVisible = post.attachment != null
             if (post.attachment != null) {
                 val urlAttachment = "http://10.0.2.2:9999/images/${post.attachment.url}"
                 Glide.with(binding.imageViewAttachment)

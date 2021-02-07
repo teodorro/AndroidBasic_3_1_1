@@ -13,17 +13,6 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class PostRepositoryHttpImpl : PostRepository {
-    private val client = OkHttpClient.Builder()
-        .connectTimeout(30, TimeUnit.SECONDS)
-        .build()
-    private val gson = Gson()
-    private val typeToken = object : TypeToken<List<Post>>(){}
-
-    companion object {
-        private const val BASE_URL = "http://10.0.2.2:9999"
-        private val jsonType = "application/json".toMediaType()
-    }
-
     override fun getAllAsync(callback: GetAllCallback) {
         PostApiService.api.getAll()
             .enqueue(object : retrofit2.Callback<List<Post>>{
@@ -39,7 +28,7 @@ class PostRepositoryHttpImpl : PostRepository {
                 }
 
                 override fun onFailure(call: retrofit2.Call<List<Post>>, t: Throwable) {
-                    callback.onError(RuntimeException(t))
+                    callback.onError(RuntimeException(t.message))
                 }
             })
     }
@@ -59,7 +48,7 @@ class PostRepositoryHttpImpl : PostRepository {
                 }
 
                 override fun onFailure(call: retrofit2.Call<Post>, t: Throwable) {
-                    onFailure(RuntimeException(t))
+                    onFailure(RuntimeException(t.message))
                 }
             })
     }
@@ -79,7 +68,7 @@ class PostRepositoryHttpImpl : PostRepository {
                 }
 
                 override fun onFailure(call: retrofit2.Call<Post>, t: Throwable) {
-                    onFailure(RuntimeException(t))
+                    onFailure(RuntimeException(t.message))
                 }
             })
     }
@@ -99,92 +88,51 @@ class PostRepositoryHttpImpl : PostRepository {
                 }
 
                 override fun onFailure(call: retrofit2.Call<Unit>, t: Throwable) {
-                    onFailure(RuntimeException(t))
+                    onFailure(RuntimeException(t.message))
                 }
             })
     }
 
-
-
-
     fun dislikeById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit){
-        val body = "{\"id\": ${id}}"
+        PostApiService.api.unlikeById(id)
+            .enqueue(object : retrofit2.Callback<Post>{
+                override fun onResponse(
+                    call: retrofit2.Call<Post>,
+                    response: retrofit2.Response<Post>
+                ) {
+                    if (response.isSuccessful){
+                        response.body()?.id?.let { onSuccess(it) }
+                    } else{
+                        onFailure(RuntimeException(response.message()))
+                    }
+                }
 
-        var requestBody = body.toRequestBody()
-
-        val request: Request = Request.Builder()
-            .method("DELETE", requestBody )
-            .url("${BASE_URL}/api/slow/posts/${id}/likes")
-            .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                onFailure(e)
-                println("---------- Error dislike request")
-            }
-            override fun onResponse(call: Call, response: Response) {
-                onSuccess(id)
-                println("---------- Dislike request sent")
-            }
-        })
+                override fun onFailure(call: retrofit2.Call<Post>, t: Throwable) {
+                    onFailure(RuntimeException(t.message))
+                }
+            })
     }
 
-//    fun likeById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit){
-//        val body = "{\"id\": ${id}}"
-//
-//        var requestBody = body.toRequestBody()
-//
-//        val request: Request = Request.Builder()
-//            .method("POST", requestBody )
-//            .url("${BASE_URL}/api/slow/posts/${id}/likes")
-//            .build()
-//
-//        client.newCall(request).enqueue(object : Callback {
-//            override fun onFailure(call: Call, e: IOException) {
-//                onFailure(e)
-//                println("---------- Error like request")
-//            }
-//            override fun onResponse(call: Call, response: Response) {
-//                onSuccess(id)
-//                println("---------- Like request sent")
-//            }
-//        })
-//    }
+    fun getById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit) {
+        PostApiService.api.getById(id)
+            .enqueue(object : retrofit2.Callback<Post>{
+                override fun onResponse(
+                    call: retrofit2.Call<Post>,
+                    response: retrofit2.Response<Post>
+                ) {
+                    if (response.isSuccessful){
+                        response.body()?.id?.let { onSuccess(it) }
+                    } else{
+                        onFailure(RuntimeException(response.message()))
+                    }
+                }
 
-//    override fun getAllAsync(callback: GetAllCallback) {
-//        val request: Request = Request.Builder()
-//            .url("${BASE_URL}/api/slow/posts")
-//            .build()
-//
-//        client.newCall(request)
-//            .enqueue(object : Callback {
-//                override fun onResponse(call: Call, response: Response) {
-//                    response.body?.use {
-//                        try {
-//                            callback.onSuccess(gson.fromJson(it.string(), typeToken.type))
-//                        } catch (e: Exception) {
-//                            callback.onError(e)
-//                        }
-//                    }
-//                }
-//                override fun onFailure(call: Call, e: IOException) {
-//                    callback.onError(e)
-//                }
-//            })
-//    }
+                override fun onFailure(call: retrofit2.Call<Post>, t: Throwable) {
+                    onFailure(RuntimeException(t.message))
+                }
+            })
+    }
 
-//    override fun getAll(): LiveData<List<Post>> {
-//        val request: Request = Request.Builder()
-//            .url("${BASE_URL}/api/slow/posts")
-//            .build()
-//
-//        return MutableLiveData(client.newCall(request)
-//            .execute()
-//            .use { it.body?.string() }
-//            .let{
-//                gson.fromJson(it, typeToken.type)
-//            })
-//    }
 
     override fun getAll(): LiveData<List<Post>> {
         TODO("Not yet implemented")
