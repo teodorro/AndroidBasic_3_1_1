@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.androidbasic_3_1_1.dto.Post
 import ru.netology.androidbasic_3_1_1.model.FeedModel
-import ru.netology.androidbasic_3_1_1.repository.GetAllCallback
 import ru.netology.androidbasic_3_1_1.repository.PostRepository
 import ru.netology.androidbasic_3_1_1.repository.PostRepositoryHttpImpl
 import ru.netology.androidbasic_3_1_1.repository.PostRepositorySqliteImpl
@@ -17,14 +16,12 @@ private val empty = Post(
     id = 0,
     content = "",
     author = "",
-    authorAvatar = "",
     published = "",
     likedByMe = false,
     likes = 0,
     views = 0,
     shares = 0,
-    video = "",
-    attachment = null
+    video = ""
 )
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
@@ -37,7 +34,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
 
     init {
-        getPostsAsync()
+        getPosts()
     }
 
     fun getPosts() {
@@ -57,64 +54,45 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getPostsAsync() {
-        _state.value = FeedModel(loading = true)
-        repository.getAllAsync(object : GetAllCallback {
-            override fun onSuccess(posts: List<Post>) {
-                _state.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
-            }
+    fun likeById(id: Long) {
+        thread {
+            if (state.value == null)
+                throw NullPointerException("state.value == null, that's impossible")
+            _state.postValue(
+                FeedModel(
+                    posts = _state.value!!.posts,
+                    loading = true
+                )
+            )
+            try {
+                val initialPosts = state.value!!.posts
+                val post = initialPosts.first { x -> x.id == id }
 
-            override fun onError(e: Exception) {
+                if (!post.likedByMe)
+                    repository.likeById(id)
+                else
+                    (repository as PostRepositoryHttpImpl).dislikeById(id)
+
+                val posts = initialPosts.map {
+                    if (it.id != id)
+                        it
+                    else
+                        it.copy(
+                            likedByMe = !it.likedByMe,
+                            likes = if (it.likedByMe) it.likes - 1 else it.likes + 1
+                        )
+                }
+                _state.postValue(
+                    FeedModel(
+                        posts,
+                        empty = posts.isEmpty()
+                    )
+                )
+
+            } catch (e: Exception) {
                 _state.postValue(FeedModel(error = true))
             }
-        })
-    }
-
-    fun likeById(id: Long) {
-        if (state.value == null)
-            throw NullPointerException("state.value == null, that's impossible")
-        _state.value =
-            FeedModel(
-                posts = _state.value!!.posts,
-                loading = true
-            )
-        val initialPosts = state.value!!.posts
-        val post = initialPosts.first { x -> x.id == id }
-
-        if (!post.likedByMe)
-            (repository as PostRepositoryHttpImpl).likeById(
-                id,
-                onSuccess = onLikeOrDislike(initialPosts, id),
-                onFailure = {
-                    _state.postValue(FeedModel(error = true))
-                }
-            )
-        else
-            (repository as PostRepositoryHttpImpl).dislikeById(
-                id,
-                onSuccess = onLikeOrDislike(initialPosts, id),
-                onFailure = {
-                    _state.postValue(FeedModel(error = true))
-                }
-            )
-    }
-
-    private fun onLikeOrDislike(
-        initialPosts: List<Post>,
-        id: Long
-    ): (Long) -> Unit = {
-        val posts = initialPosts.map {
-            if (it.id != id)
-                it
-            else
-                it.copy(
-                    likedByMe = !it.likedByMe,
-                    likes = if (it.likedByMe) it.likes - 1 else it.likes + 1
-                )
         }
-        _state.postValue(
-            FeedModel(posts, empty = posts.isEmpty())
-        )
     }
 
     fun shareById(id: Long) = repository.shareById(id)

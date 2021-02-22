@@ -3,9 +3,7 @@ package ru.netology.androidbasic_3_1_1.viewHolder
 
 import android.view.View
 import android.widget.PopupMenu
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import ru.netology.androidbasic_3_1_1.OnInteractionListener
 import ru.netology.androidbasic_3_1_1.dto.Post
 import ru.netology.androidbasic_3_1_1.R
@@ -51,27 +49,6 @@ class PostViewHolder(
             materialButtonPlay.setOnClickListener { onInteractionListener.onPlay(post) }
             constrLayoutPlay.visibility = if (post.video.isNullOrBlank()) View.GONE else View.VISIBLE
             constrLayoutPlay.setOnClickListener { onInteractionListener.onPlay(post) }
-
-            val urlAvatar = "http://10.0.2.2:9999/avatars/${post.authorAvatar}"
-            Glide.with(binding.imageViewAvatar)
-                .load(urlAvatar)
-                .placeholder(R.drawable.common_full_open_on_phone)
-                .error(R.drawable.ic_baseline_error_24)
-                .circleCrop()
-                .timeout(10_000)
-                .into(binding.imageViewAvatar)
-
-            imageViewAttachment.isVisible = post.attachment != null
-            constrLayoutAttachment.isVisible = post.attachment != null
-            if (post.attachment != null) {
-                val urlAttachment = "http://10.0.2.2:9999/images/${post.attachment.url}"
-                Glide.with(binding.imageViewAttachment)
-                    .load(urlAttachment)
-                    .placeholder(R.drawable.common_full_open_on_phone)
-                    .error(R.drawable.ic_baseline_error_24)
-                    .timeout(10_000)
-                    .into(binding.imageViewAttachment)
-            }
         }
     }
 

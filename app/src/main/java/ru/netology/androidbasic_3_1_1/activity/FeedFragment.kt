@@ -58,7 +58,7 @@ class FeedFragment : Fragment() {
         }
 
         binding.errorButton.setOnClickListener {
-            viewModel.getPostsAsync()
+            viewModel.getPosts()
         }
 
         return binding.root

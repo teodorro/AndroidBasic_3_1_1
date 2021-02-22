@@ -23,28 +23,6 @@ class PostRepositoryHttpImpl : PostRepository {
         private val jsonType = "application/json".toMediaType()
     }
 
-    override fun getAllAsync(callback: GetAllCallback) {
-        val request: Request = Request.Builder()
-            .url("${BASE_URL}/api/slow/posts")
-            .build()
-
-        client.newCall(request)
-            .enqueue(object : Callback {
-                override fun onResponse(call: Call, response: Response) {
-                    response.body?.use {
-                        try {
-                            callback.onSuccess(gson.fromJson(it.string(), typeToken.type))
-                        } catch (e: Exception) {
-                            callback.onError(e)
-                        }
-                    }
-                }
-                override fun onFailure(call: Call, e: IOException) {
-                    callback.onError(e)
-                }
-            })
-    }
-
     override fun getAll(): LiveData<List<Post>> {
         val request: Request = Request.Builder()
             .url("${BASE_URL}/api/slow/posts")
@@ -59,7 +37,24 @@ class PostRepositoryHttpImpl : PostRepository {
     }
 
     override fun likeById(id: Long) {
-        TODO("Not yet implemented")
+        val body = "{\"id\": ${id}}"
+
+        var requestBody = body.toRequestBody()
+
+        val request: Request = Request.Builder()
+            .method("POST", requestBody )
+            .url("${BASE_URL}/api/slow/posts/${id}/likes")
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                println("---------- Error like request")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                println("---------- Like request sent")
+            }
+        })
     }
 
     override fun shareById(id: Long) {
@@ -79,32 +74,6 @@ class PostRepositoryHttpImpl : PostRepository {
     }
 
     fun dislikeById(id: Long) {
-        TODO("Not yet implemented")
-    }
-
-    fun likeById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit){
-        val body = "{\"id\": ${id}}"
-
-        var requestBody = body.toRequestBody()
-
-        val request: Request = Request.Builder()
-            .method("POST", requestBody )
-            .url("${BASE_URL}/api/slow/posts/${id}/likes")
-            .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                onFailure(e)
-                println("---------- Error like request")
-            }
-            override fun onResponse(call: Call, response: Response) {
-                onSuccess(id)
-                println("---------- Like request sent")
-            }
-        })
-    }
-
-    fun dislikeById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit){
         val body = "{\"id\": ${id}}"
 
         var requestBody = body.toRequestBody()
@@ -116,11 +85,10 @@ class PostRepositoryHttpImpl : PostRepository {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                onFailure(e)
                 println("---------- Error dislike request")
             }
+
             override fun onResponse(call: Call, response: Response) {
-                onSuccess(id)
                 println("---------- Dislike request sent")
             }
         })
