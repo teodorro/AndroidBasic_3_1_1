@@ -33,7 +33,7 @@ class PostRepositoryHttpImpl : PostRepository {
             })
     }
 
-    fun likeById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit){
+    override fun likeById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit){
         PostApiService.api.likeById(id)
             .enqueue(object : retrofit2.Callback<Post>{
                 override fun onResponse(
@@ -53,7 +53,7 @@ class PostRepositoryHttpImpl : PostRepository {
             })
     }
 
-    fun save(post: Post, onSuccess: (Post) -> Unit, onFailure: (Throwable) -> Unit){
+    override fun save(post: Post, onSuccess: (Post) -> Unit, onFailure: (Throwable) -> Unit){
         PostApiService.api.save(post)
             .enqueue(object : retrofit2.Callback<Post>{
                 override fun onResponse(
@@ -73,7 +73,7 @@ class PostRepositoryHttpImpl : PostRepository {
             })
     }
 
-    fun removeById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit){
+    override fun removeById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit){
         PostApiService.api.removeById(id)
             .enqueue(object : retrofit2.Callback<Unit>{
                 override fun onResponse(
@@ -93,7 +93,7 @@ class PostRepositoryHttpImpl : PostRepository {
             })
     }
 
-    fun dislikeById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit){
+    override fun dislikeById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit){
         PostApiService.api.unlikeById(id)
             .enqueue(object : retrofit2.Callback<Post>{
                 override fun onResponse(
@@ -113,7 +113,7 @@ class PostRepositoryHttpImpl : PostRepository {
             })
     }
 
-    fun getById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit) {
+    override fun getById(id: Long, onSuccess: (Long) -> Unit, onFailure: (Throwable) -> Unit) {
         PostApiService.api.getById(id)
             .enqueue(object : retrofit2.Callback<Post>{
                 override fun onResponse(
@@ -134,31 +134,14 @@ class PostRepositoryHttpImpl : PostRepository {
     }
 
 
-    override fun getAll(): LiveData<List<Post>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun likeById(id: Long) {
-        TODO("Not yet implemented")
-    }
 
     override fun shareById(id: Long) {
         TODO("Not yet implemented")
     }
 
-    override fun removeById(id: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override fun save(post: Post) {
-        TODO("Not yet implemented")
-    }
 
     override fun editPostContentById(id: Long, postContent: String) {
         TODO("Not yet implemented")
     }
 
-    fun dislikeById(id: Long) {
-        TODO("Not yet implemented")
-    }
 }

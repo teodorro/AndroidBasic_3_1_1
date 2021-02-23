@@ -38,10 +38,7 @@ class FeedFragment : Fragment() {
 
         val adapter = PostsAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) { editPost(post) }
-            override fun onLike(post: Post) {
-                viewModel.likeById(post.id)
-                viewModel.getPostsAsync() // Совершенно не к месту, но непонятно, почему у materialButtonLikes текст в случае ошибки не меняется, а isChecked меняется, причем сразу, до запросов
-            }
+            override fun onLike(post: Post) { viewModel.likeById(post.id) }
             override fun onRemove(post: Post) { viewModel.removeById(post.id) }
             override fun onShare(post: Post) { sharePost(post) }
             override fun onPlay(post: Post) { playVideo(post) }

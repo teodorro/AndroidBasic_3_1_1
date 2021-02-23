@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.androidbasic_3_1_1.dto.Post
 import ru.netology.androidbasic_3_1_1.model.FeedModel
+import ru.netology.androidbasic_3_1_1.model.StateLiveData
 import ru.netology.androidbasic_3_1_1.repository.GetAllCallback
 import ru.netology.androidbasic_3_1_1.repository.PostRepository
 import ru.netology.androidbasic_3_1_1.repository.PostRepositoryHttpImpl
@@ -23,7 +24,7 @@ private val empty = Post(
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PostRepository = PostRepositoryHttpImpl()
-    private val _state = MutableLiveData(FeedModel())
+    private val _state = StateLiveData()
     val state: LiveData<FeedModel>
         get() = _state
     private val edited = MutableLiveData(empty)
@@ -51,16 +52,17 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun likeById(id: Long){
         if (state.value == null)
             throw NullPointerException("state.value == null, that's impossible")
+
         _state.value =
             FeedModel(
-                posts = _state.value!!.posts,
+                posts = _state.getPosts(),
                 loading = true
             )
-        val initialPosts = state.value!!.posts
+        val initialPosts = _state.getPosts()
         val post = initialPosts.first { x -> x.id == id }
 
         if (!post.likedByMe)
-            (repository as PostRepositoryHttpImpl).likeById(
+            repository.likeById(
                 id,
                 onSuccess = onLikeOrDislike(initialPosts, id),
                 onFailure = {
@@ -73,7 +75,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 }
             )
         else
-            (repository as PostRepositoryHttpImpl).dislikeById(
+            repository.dislikeById(
                 id,
                 onSuccess = onLikeOrDislike(initialPosts, id),
                 onFailure = {
@@ -114,14 +116,14 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun removeById(id: Long) {
         _state.value =
             FeedModel(
-                posts = _state.value!!.posts,
+                posts = _state.getPosts(),
                 loading = true
             )
-        val initialPosts = state.value!!.posts
-        (repository as PostRepositoryHttpImpl).removeById(
+        val initialPosts = _state.getPosts()
+        repository.removeById(
             id,
             onSuccess = {
-                var posts = state.value!!.posts
+                var posts = _state.getPosts()
                 if (posts.any { x -> x.id == id }) {
                     posts = posts.minus(posts.first { x -> x.id == id })
                 }
@@ -141,11 +143,11 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun getById(id: Long) {
         _state.value =
             FeedModel(
-                posts = _state.value!!.posts,
+                posts = _state.getPosts(),
                 loading = true
             )
-        val initialPosts = state.value!!.posts
-        (repository as PostRepositoryHttpImpl).getById(
+        val initialPosts = _state.getPosts()
+        repository.getById(
             id,
             onSuccess = {
                 _state.postValue(FeedModel(initialPosts))
@@ -164,15 +166,15 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun save() {
         _state.value =
             FeedModel(
-                posts = _state.value!!.posts,
+                posts = _state.getPosts(),
                 loading = true
             )
-        val initialPosts = state.value!!.posts
+        val initialPosts = _state.getPosts()
         edited.value?.let { it ->
-            (repository as PostRepositoryHttpImpl).save(
+            repository.save(
                 it,
                 onSuccess = {
-                    var posts = state.value!!.posts
+                    var posts = _state.getPosts()
                     var post = it
                     if (post.id == 0L) {
                         posts = listOf(

@@ -29,6 +29,7 @@ class PostViewHolder(
             materialButtonLikes.isChecked = post.likedByMe
             materialButtonLikes.setOnClickListener {
                 onInteractionListener.onLike(post)
+                materialButtonLikes.isChecked = !materialButtonLikes.isChecked
             }
 
 //            materialButtonShares.text = convertIntToStr(post.shares)
